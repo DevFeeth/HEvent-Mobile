@@ -2,9 +2,6 @@ import { ActivityIndicator, Modal, StyleSheet, Text, View } from 'react-native';
 
 import { COLORS } from '../constants/colors';
 
-// Popup de chargement par-dessus l'écran, à afficher pendant une requête
-// <LoadingPopup visible={loading} />
-// <LoadingPopup visible={submitting} title="Connexion..." message="Vérification de vos identifiants." />
 export default function LoadingPopup({
     visible,
     title = 'Chargement...',

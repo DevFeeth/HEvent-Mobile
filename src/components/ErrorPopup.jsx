@@ -4,11 +4,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '../constants/colors';
 import { getErrorContent } from '../utils/ApiError';
 
-// Popup d'erreur par-dessus l'écran, s'affiche tant que error n'est pas null
-// <ErrorPopup error={error} onClose={() => setError(null)} />
-// setError({ title: 'Pas encore disponible', message: '...' })  ← titre et texte choisis
-// setError(apiError)                                           ← titre et texte selon le code
-// <ErrorPopup ... onRetry={refetch} messages={{ 401: { title: '...', message: '...' } }} />
 export default function ErrorPopup({ error, onClose, onRetry, messages }) {
     const { title, message } = getErrorContent(error, messages);
 
@@ -65,7 +60,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(3, 29, 62, 0.35)', // navy assombri
+        backgroundColor: COLORS.navy, // navy assombri
         paddingHorizontal: 24,
     },
     card: {

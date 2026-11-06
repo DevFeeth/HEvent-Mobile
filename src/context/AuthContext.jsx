@@ -18,7 +18,6 @@ export function AuthProvider({ children }) {
         await SecureStore.deleteItemAsync(TOKEN_KEY);
     }, []);
 
-    // Au lancement : si un token est sauvegardé, on récupère le profil
     useEffect(() => {
         SecureStore.getItemAsync(TOKEN_KEY)
             .then(async (token) => {
@@ -27,7 +26,6 @@ export function AuthProvider({ children }) {
                 setUser(await userService.getMe());
             })
             .catch((err) => {
-                // Token expiré (24 h) ou compte supprimé : on repart déconnecté
                 if (err.status === 401 || err.status === 404) return logout();
             })
             .finally(() => setLoading(false));
@@ -39,7 +37,6 @@ export function AuthProvider({ children }) {
         setUser(await userService.getMe());
     }, []);
 
-    // L'API ne renvoie pas de token à l'inscription : on se connecte juste après
     const register = useCallback(
         async (form) => {
             await userService.register(form);
@@ -56,7 +53,6 @@ export function AuthProvider({ children }) {
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-// const { user, login, register, logout } = useAuth();
 export function useAuth() {
     return useContext(AuthContext);
 }

@@ -22,7 +22,6 @@ import { ApiError } from '../utils/ApiError';
 const heroImage = require('../assets/images/connectionCard.png');
 const EMPTY_FORM = { first_name: '', last_name: '', email: '', password: '' };
 
-// Erreurs propres à la connexion / inscription (les autres codes gardent leur texte par défaut)
 const AUTH_MESSAGES = {
     401: { title: 'Connexion impossible', message: 'E-mail ou mot de passe incorrect.' },
     409: { title: 'Compte existant', message: 'Un compte existe déjà avec cet e-mail, connectez-vous.' },
