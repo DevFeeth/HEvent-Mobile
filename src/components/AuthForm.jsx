@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import {
     ActivityIndicator,
-    Alert,
     ImageBackground,
     KeyboardAvoidingView,
     Platform,
@@ -18,15 +17,15 @@ import ErrorPopup from './ErrorPopup';
 import LoadingPopup from './LoadingPopup';
 import { COLORS } from '../constants/colors';
 import { useAuth } from '../context/AuthContext';
+import { ApiError } from '../utils/ApiError';
 
 const heroImage = require('../assets/images/connectionCard.png');
-
 const EMPTY_FORM = { first_name: '', last_name: '', email: '', password: '' };
-const DANGER = '#c62828';
 
+// Erreurs propres à la connexion / inscription (les autres codes gardent leur texte par défaut)
 const AUTH_MESSAGES = {
-    401: 'E-mail ou mot de passe incorrect.',
-    409: 'Un compte existe déjà avec cet e-mail, connectez-vous.',
+    401: { title: 'Connexion impossible', message: 'E-mail ou mot de passe incorrect.' },
+    409: { title: 'Compte existant', message: 'Un compte existe déjà avec cet e-mail, connectez-vous.' },
 };
 
 function validate(mode, form) {
@@ -63,7 +62,11 @@ export default function AuthForm() {
         setError(null);
     };
 
-    const forgotPassword = () => Alert.alert('Mot de passe oublié', 'Cette fonctionnalité arrive bientôt.');
+    const forgotPassword = () =>
+        setError({
+            title: 'Pas encore disponible',
+            message: "La réinitialisation du mot de passe n'est pas encore disponible.",
+        });
 
     const submit = async () => {
         const errors = validate(mode, form);
@@ -238,9 +241,9 @@ export default function AuthForm() {
             <ErrorPopup
                 error={error}
                 onClose={() => setError(null)}
-                onRetry={submit}
+                // Réessayer seulement pour une erreur de l'API, pas pour un message écrit à la main
+                onRetry={error instanceof ApiError ? submit : undefined}
                 messages={AUTH_MESSAGES}
-                title={isRegister ? 'Inscription impossible' : 'Connexion impossible'}
             />
         </KeyboardAvoidingView>
     );
@@ -342,7 +345,7 @@ const styles = StyleSheet.create({
         height: 52,
     },
     inputRowError: {
-        borderColor: DANGER,
+        borderColor: COLORS.error,
     },
     input: {
         flex: 1,
@@ -350,7 +353,7 @@ const styles = StyleSheet.create({
         color: COLORS.text,
     },
     fieldError: {
-        color: DANGER,
+        color: COLORS.error,
         fontSize: 13,
         marginTop: 4,
     },

@@ -3,7 +3,6 @@ import { API_URL } from './config';
 
 const TIMEOUT_MS = 10000;
 
-// Token JWT gardé en mémoire (perdu au redémarrage de l'app pour l'instant)
 let authToken = null;
 
 export function setAuthToken(token) {
@@ -28,7 +27,6 @@ async function request(method, path, { body, params } = {}) {
     if (body !== undefined) headers['Content-Type'] = 'application/json';
     if (authToken) headers.Authorization = `Bearer ${authToken}`;
 
-    // Sans délai max, une API injoignable peut bloquer l'écran 30 à 60 s
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
@@ -48,16 +46,14 @@ async function request(method, path, { body, params } = {}) {
         clearTimeout(timer);
     }
 
-    // L'API renvoie du JSON en cas de succès, et du texte pour les erreurs
     let data = text;
     try {
         data = text ? JSON.parse(text) : null;
     } catch {
-        // réponse texte, on la garde telle quelle
+        // On garde la data brut
     }
 
     if (!response.ok) {
-        // Erreurs de validation (400) : tableau de { message, field, ... }
         const fields = Array.isArray(data) ? data : [];
         const message = fields.length
             ? fields.map((e) => e.message).join('\n')

@@ -7,22 +7,36 @@ export class ApiError extends Error {
     }
 }
 
-const MESSAGES = {
-    0: 'Impossible de joindre le serveur. Vérifie ta connexion.',
-    400: 'Certaines informations sont invalides.',
-    401: 'Tu dois te connecter pour continuer.',
-    402: 'Le paiement a été refusé.',
-    403: "Tu n'as pas accès à cette action.",
-    404: 'Élément introuvable.',
-    409: "Cette action n'est pas possible pour le moment.",
-    503: 'Le serveur est momentanément indisponible.',
+const ERRORS = {
+    0: { title: 'Serveur injoignable', message: 'Impossible de joindre le serveur. Vérifiez votre connexion.' },
+    400: { title: 'Informations invalides', message: 'Certaines informations sont invalides.' },
+    401: { title: 'Connexion requise', message: 'Vous devez vous connecter pour continuer.' },
+    402: { title: 'Paiement refusé', message: 'Le paiement a été refusé.' },
+    403: { title: 'Accès refusé', message: "Vous n'avez pas accès à cette action." },
+    404: { title: 'Introuvable', message: 'Élément introuvable.' },
+    409: { title: 'Action impossible', message: "Cette action n'est pas possible pour le moment." },
+    503: { title: 'Serveur indisponible', message: 'Le serveur est momentanément indisponible.' },
 };
 
-const DEFAULT_MESSAGE = 'Une erreur est survenue. Réessaie plus tard.';
+const DEFAULT_ERROR = {
+    title: 'Une erreur est survenue',
+    message: 'Une erreur est survenue. Réessayez plus tard.',
+};
 
-export function getErrorMessage(error, overrides = {}) {
+export function getErrorContent(error, overrides = {}) {
     if (error instanceof ApiError) {
-        return overrides[error.status] ?? MESSAGES[error.status] ?? DEFAULT_MESSAGE;
+        const base = ERRORS[error.status] ?? DEFAULT_ERROR;
+        const custom = overrides[error.status];
+        if (typeof custom === 'string') return { ...base, message: custom };
+        return { ...base, ...custom };
     }
-    return DEFAULT_MESSAGE;
+    if (typeof error === 'string') return { ...DEFAULT_ERROR, message: error };
+    // Un bug JS (TypeError...) a aussi un .message, mais technique : on ne l'affiche pas
+    if (error && !(error instanceof Error) && (error.title || error.message)) {
+        return {
+            title: error.title ?? DEFAULT_ERROR.title,
+            message: error.message ?? DEFAULT_ERROR.message,
+        };
+    }
+    return DEFAULT_ERROR;
 }

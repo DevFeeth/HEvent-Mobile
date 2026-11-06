@@ -2,20 +2,16 @@ import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { COLORS } from '../constants/colors';
-import { getErrorMessage } from '../utils/ApiError';
-
-const DANGER = '#c62828';
+import { getErrorContent } from '../utils/ApiError';
 
 // Popup d'erreur par-dessus l'écran, s'affiche tant que error n'est pas null
 // <ErrorPopup error={error} onClose={() => setError(null)} />
-// <ErrorPopup error={error} onClose={...} onRetry={refetch} messages={{ 401: 'E-mail ou mot de passe incorrect.' }} />
-export default function ErrorPopup({
-    error,
-    onClose,
-    onRetry,
-    messages,
-    title = 'Une erreur est survenue',
-}) {
+// setError({ title: 'Pas encore disponible', message: '...' })  ← titre et texte choisis
+// setError(apiError)                                           ← titre et texte selon le code
+// <ErrorPopup ... onRetry={refetch} messages={{ 401: { title: '...', message: '...' } }} />
+export default function ErrorPopup({ error, onClose, onRetry, messages }) {
+    const { title, message } = getErrorContent(error, messages);
+
     const retry = () => {
         onClose();
         onRetry();
@@ -27,15 +23,15 @@ export default function ErrorPopup({
             transparent
             animationType="fade"
             statusBarTranslucent
-            onRequestClose={onClose} // bouton retour Android
+            onRequestClose={onClose}
         >
             <View style={styles.backdrop}>
                 <View style={styles.card}>
                     <View style={styles.iconBox}>
-                        <Ionicons name="alert-circle-outline" size={26} color={DANGER} />
+                        <Ionicons name="alert-circle-outline" size={26} color={COLORS.error} />
                     </View>
                     <Text style={styles.title}>{title}</Text>
-                    {error && <Text style={styles.message}>{getErrorMessage(error, messages)}</Text>}
+                    <Text style={styles.message}>{message}</Text>
 
                     <View style={styles.actions}>
                         {onRetry && (
