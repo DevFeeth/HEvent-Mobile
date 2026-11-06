@@ -17,3 +17,6 @@ export const getMe = () => api.get('/users/me');
 export const getMyTickets = () => api.get('/users/me/tickets');
 
 export const getMyOrders = () => api.get('/users/me/orders');
+
+// Événements de l'organisateur connecté, brouillons compris
+export const getMyEvents = () => api.get('/users/me/events');
