@@ -14,10 +14,10 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import ErrorPopup from './ErrorPopup';
 import LoadingPopup from './LoadingPopup';
 import { COLORS } from '../constants/colors';
 import { useAuth } from '../context/AuthContext';
-import { getErrorMessage } from '../utils/ApiError';
 
 const heroImage = require('../assets/images/connectionCard.png');
 
@@ -190,8 +190,6 @@ export default function AuthForm() {
                         </Pressable>
                     )}
 
-                    {error && <Text style={styles.error}>{getErrorMessage(error, AUTH_MESSAGES)}</Text>}
-
                     <Pressable
                         onPress={submit}
                         disabled={submitting}
@@ -236,6 +234,13 @@ export default function AuthForm() {
                 visible={submitting}
                 title={isRegister ? 'Création du compte...' : 'Connexion...'}
             />
+
+            <ErrorPopup
+                error={error}
+                onClose={() => setError(null)}
+                onRetry={submit}
+                messages={AUTH_MESSAGES}
+                title={isRegister ? 'Inscription impossible' : 'Connexion impossible'}
             />
         </KeyboardAvoidingView>
     );
@@ -358,12 +363,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '600',
         color: COLORS.text,
-    },
-    error: {
-        color: DANGER,
-        fontSize: 15,
-        textAlign: 'center',
-        marginTop: 8,
     },
     primaryButton: {
         flexDirection: 'row',
