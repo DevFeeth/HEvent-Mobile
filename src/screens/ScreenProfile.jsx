@@ -1,23 +1,22 @@
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import AuthForm from '../components/AuthForm';
+import LoadingPopup from '../components/LoadingPopup';
 import { COLORS } from '../constants/colors';
 import { useAuth } from '../context/AuthContext';
 
 export default function ScreenProfile() {
     const { user, loading, logout } = useAuth();
 
-    // Lecture du token sauvegardé au lancement
     if (loading) {
         return (
-            <SafeAreaView style={[styles.container, styles.center]}>
-                <ActivityIndicator color={COLORS.navy} />
+            <SafeAreaView style={styles.container}>
+                <LoadingPopup visible />
             </SafeAreaView>
         );
     }
 
-    // Pas connecté : connexion / création de compte
     if (!user) {
         return (
             <SafeAreaView style={styles.container}>
@@ -26,7 +25,6 @@ export default function ScreenProfile() {
         );
     }
 
-    // Connecté : page profil (provisoire, à faire plus tard)
     return (
         <SafeAreaView style={[styles.container, styles.center]}>
             <View style={styles.placeholder}>

@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
+import { COLORS } from '../constants/colors';
 
 export default function Events() {
     return (

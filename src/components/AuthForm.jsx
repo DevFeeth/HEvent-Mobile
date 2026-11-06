@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-
+import LoadingPopup from './LoadingPopup';
 import { COLORS } from '../constants/colors';
 import { useAuth } from '../context/AuthContext';
 import { getErrorMessage } from '../utils/ApiError';
@@ -24,13 +24,11 @@ const heroImage = require('../assets/images/connectionCard.png');
 const EMPTY_FORM = { first_name: '', last_name: '', email: '', password: '' };
 const DANGER = '#c62828';
 
-// Messages spécifiques à la connexion / inscription
 const AUTH_MESSAGES = {
     401: 'E-mail ou mot de passe incorrect.',
     409: 'Un compte existe déjà avec cet e-mail, connectez-vous.',
 };
 
-// Mêmes règles que le validateur de l'API, pour des messages en français
 function validate(mode, form) {
     const errors = {};
     if (mode === 'register') {
@@ -65,9 +63,7 @@ export default function AuthForm() {
         setError(null);
     };
 
-    // L'API n'a pas encore de route de réinitialisation du mot de passe
-    const forgotPassword = () =>
-        Alert.alert('Mot de passe oublié', 'Cette fonctionnalité arrive bientôt.');
+    const forgotPassword = () => Alert.alert('Mot de passe oublié', 'Cette fonctionnalité arrive bientôt.');
 
     const submit = async () => {
         const errors = validate(mode, form);
@@ -235,6 +231,12 @@ export default function AuthForm() {
                     </Text>
                 </Pressable>
             </ScrollView>
+
+            <LoadingPopup
+                visible={submitting}
+                title={isRegister ? 'Création du compte...' : 'Connexion...'}
+            />
+            />
         </KeyboardAvoidingView>
     );
 }
