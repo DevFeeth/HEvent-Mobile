@@ -13,7 +13,7 @@ export default function TabBarIcon({ name, focused }) {
 
 const styles = StyleSheet.create({
     wrapper: {
-        width: 60,
+        width: 75,
         height: 48,
         borderRadius: 24,
         justifyContent: 'center',
