@@ -10,6 +10,7 @@ import LoadingPopup from '../components/LoadingPopup';
 import OrganizerEventCard from '../components/OrganizerEventCard';
 import { COLORS } from '../constants/colors';
 import useFetch from '../hooks/useFetch';
+import { getCategories } from '../services/categoryService';
 import { deleteEvent } from '../services/eventService';
 import { getMyEvents } from '../services/userService';
 
@@ -28,7 +29,11 @@ const NOT_AVAILABLE = (what) => ({
 export default function ScreenOrganizer() {
     const navigation = useNavigation();
     const { data: events, loading, error: loadError, refetch } = useFetch(getMyEvents);
+    const { data: categories } = useFetch(getCategories);
     const [error, setError] = useState(null);
+
+    // name → label, ex. { PARTY: 'Soirée' } ; tant que la liste n'est pas chargée, on affiche le name
+    const categoryLabel = (name) => categories?.find((c) => c.name === name)?.label ?? name;
     const [deleting, setDeleting] = useState(false);
 
     const confirmDelete = (event) =>
@@ -96,6 +101,7 @@ export default function ScreenOrganizer() {
                 renderItem={({ item }) => (
                     <OrganizerEventCard
                         event={item}
+                        categoryLabel={categoryLabel(item.category_name)}
                         onEdit={() => setError(NOT_AVAILABLE("La modification d'un événement"))}
                         onDelete={() => confirmDelete(item)}
                     />

@@ -1,7 +1,6 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { categoryLabel } from '../constants/categories';
 import { COLORS } from '../constants/colors';
 import { formatShortDate } from '../utils/format';
 
@@ -11,7 +10,7 @@ const STATUS_LABELS = {
     FINISHED: 'Terminé',
 };
 
-export default function OrganizerEventCard({ event, onEdit, onDelete }) {
+export default function OrganizerEventCard({ event, categoryLabel, onEdit, onDelete }) {
     const status = STATUS_LABELS[event.status];
 
     return (
@@ -37,7 +36,7 @@ export default function OrganizerEventCard({ event, onEdit, onDelete }) {
                         )}
                     </View>
                     <Text style={styles.meta} numberOfLines={1}>
-                        {categoryLabel(event.category_name)} · {formatShortDate(event.start_date)}
+                        {categoryLabel} · {formatShortDate(event.start_date)}
                     </Text>
                 </View>
             </View>
