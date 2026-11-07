@@ -1,18 +1,32 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function Profile() {
+import AuthForm from '../components/AuthForm';
+import LoadingPopup from '../components/LoadingPopup';
+import UserProfile from '../components/UserProfile';
+import { COLORS } from '../constants/colors';
+import { useAuth } from '../context/AuthContext';
+
+export default function ScreenProfile() {
+    const { user, loading, logout } = useAuth();
+
     return (
-        <View style={StyleSheet.container}>
-            <Text>Profile Page</Text>
-        </View>
-    )
+        <SafeAreaView style={styles.container}>
+            {loading ? (
+                <LoadingPopup visible />
+            ) : user ? (
+                <UserProfile user={user} onLogout={logout} />
+            ) : (
+                <AuthForm />
+            )}
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: COLORS.background,
+        paddingHorizontal: 16,
     },
 });

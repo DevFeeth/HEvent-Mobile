@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
+import { COLORS } from '../constants/colors';
 
 export default function Tickets() {
     return (
@@ -11,7 +12,7 @@ export default function Tickets() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.background,
         alignItems: 'center',
         justifyContent: 'center',
     },
