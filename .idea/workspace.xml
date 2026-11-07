@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b6bdfc93-7ebd-43e7-aeff-8812c03a45bf" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseLocalColorSettings">
+    <colors>
+      <entry key="0cd8e574-362c-4d82-90bc-3ba3deb967a8" value="" />
+    </colors>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="4.063655387038913E-139" />
+      <entry key="S10" value="3.9610817154540614E-69" />
+      <entry key="S30" value="2.359947763250418E-22" />
+      <entry key="S60" value="1.5404125746640872E-10" />
+      <entry key="M2" value="1.4963678663113588E-4" />
+      <entry key="M5" value="0.6990671172363188" />
+      <entry key="M10" value="13.396137474818609" />
+      <entry key="M15" value="38.371985803861875" />
+      <entry key="M30" value="129.70250345392193" />
+      <entry key="H1" value="302.4534866499506" />
+      <entry key="H2" value="530.4879429759059" />
+      <entry key="H4" value="736.1366664276255" />
+      <entry key="D1" value="992.7357615779524" />
+      <entry key="W1" value="1047.5079140265734" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0" />
+      <entry key="S60" value="1.0000000000008928" />
+      <entry key="M2" value="1.0000009449650573" />
+      <entry key="M5" value="1.0040455400420412" />
+      <entry key="M10" value="1.0957059395289972" />
+      <entry key="M15" value="1.3809680233000188" />
+      <entry key="M30" value="3.167688564564147" />
+      <entry key="H1" value="7.2771538085024385" />
+      <entry key="H2" value="12.422533314531226" />
+      <entry key="H4" value="16.7289415455443" />
+      <entry key="D1" value="21.77948261202785" />
+      <entry key="W1" value="22.820710001142423" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="4.163256307460726E-4" />
+      <entry key="MS500" value="0.21080777756252808" />
+      <entry key="S2" value="0.6775972853771345" />
+      <entry key="S5" value="0.8558322798833996" />
+      <entry key="S10" value="0.925112036395268" />
+      <entry key="S30" value="0.9743869163976545" />
+      <entry key="S60" value="0.9871103872938551" />
+      <entry key="M2" value="0.9936848482594937" />
+      <entry key="M5" value="1.7004751038195853" />
+      <entry key="M10" value="14.489871714534187" />
+      <entry key="M15" value="39.75020234622907" />
+      <entry key="M30" value="132.86454673198907" />
+      <entry key="H1" value="309.7229624966986" />
+      <entry key="H2" value="542.90336989874" />
+      <entry key="H4" value="752.8605727030542" />
+      <entry key="D1" value="1014.5140941582683" />
+      <entry key="W1" value="1070.3284502019192" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3KdeXTAgD4ps3bH4EPoH42W6K7h" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "nolan",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/nolan/IdeaProjects/HEvent-Mobile/src/assets",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Users\\nolan\\AppData\\Local\\Programs\\IntelliJ IDEA\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\nolan\IdeaProjects\HEvent-Mobile\src\assets" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\nolan\IdeaProjects\HEvent-Mobile\src\assets\images" />
+      <recent name="C:\Users\nolan\IdeaProjects\HEvent-Mobile\src\utils" />
+      <recent name="C:\Users\nolan\IdeaProjects\HEvent-Mobile\src\components" />
+      <recent name="C:\Users\nolan\IdeaProjects\HEvent-Mobile\src\components\Navbar" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-a203e0a19954-intellij.indexing.shared.core-IU-262.10968.63" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.10968.63" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b6bdfc93-7ebd-43e7-aeff-8812c03a45bf" name="Changes" comment="" />
+      <created>1791891911426</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1791891911426</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
