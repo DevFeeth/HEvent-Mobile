@@ -22,11 +22,6 @@ const DELETE_MESSAGES = {
     },
 };
 
-const NOT_AVAILABLE = (what) => ({
-    title: 'Pas encore disponible',
-    message: `${what} n'est pas encore disponible.`,
-});
-
 export default function ScreenOrganizer() {
     const navigation = useNavigation();
     const { data: events, loading, error: loadError, refetch } = useFetch(getMyEvents);
@@ -131,7 +126,7 @@ export default function ScreenOrganizer() {
                             </View>
                         )}
                         <Pressable
-                            onPress={() => setError(NOT_AVAILABLE("La création d'un événement"))}
+                            onPress={() => navigation.navigate('CreateEvent')}
                             style={({ pressed }) => [styles.create, pressed && styles.pressed]}
                         >
                             <Ionicons name="add" size={20} color={COLORS.white} />
@@ -244,7 +239,6 @@ const styles = StyleSheet.create({
         marginVertical: 24,
     },
 
-    // Pied de page
     note: {
         flexDirection: 'row',
         alignItems: 'center',

@@ -16,10 +16,13 @@ import Field from './Field';
 import { COLORS } from '../constants/colors';
 import { addTicketType, updateTicketType } from '../services/ticketTypeService';
 import { ApiError, getErrorContent } from '../utils/ApiError';
-import { LIMITS, parsePrice, TICKET_TYPE_RULES, validateForm } from '../utils/validators';
+import { validateForm } from '../utils/validators/common';
+import { EVENT_LIMITS, parsePrice, ticketTypeRules } from '../utils/validators/eventValidators';
 
 const REFUSALS = {
     'This value is already in use': 'Un type de billet porte déjà ce nom pour cet événement.',
+    'The quantity cannot be lower than the number of tickets already sold':
+        'Le nombre de places ne peut pas être inférieur au nombre de billets déjà vendus.',
 };
 
 const toForm = (ticketType) => ({
@@ -36,7 +39,8 @@ const TO_API = {
     available_quantity: (v) => Number(v),
 };
 
-export default function TicketTypeSheet({ visible, eventId, ticketType, onClose, onSaved }) {
+// sold : billets déjà vendus de ce type (la quantité ne peut pas descendre en dessous)
+export default function TicketTypeSheet({ visible, eventId, ticketType, sold = 0, onClose, onSaved }) {
     const isEdit = !!ticketType;
     const [initial, setInitial] = useState(() => toForm(ticketType));
     const [form, setForm] = useState(initial);
@@ -61,7 +65,7 @@ export default function TicketTypeSheet({ visible, eventId, ticketType, onClose,
         setForm((f) => ({ ...f, [field]: mask ? mask(value) : value }));
 
     const submit = async () => {
-        const errors = validateForm(form, TICKET_TYPE_RULES);
+        const errors = validateForm(form, ticketTypeRules(sold));
         setFieldErrors(errors);
         setError(null);
         if (Object.keys(errors).length) return;
@@ -122,7 +126,7 @@ export default function TicketTypeSheet({ visible, eventId, ticketType, onClose,
                             value={form.name}
                             onChangeText={update('name')}
                             error={fieldErrors.name}
-                            maxLength={LIMITS.ticketTypeName}
+                            maxLength={EVENT_LIMITS.ticketTypeName}
                         />
                         <Field
                             label="Description (facultatif)"
@@ -131,7 +135,7 @@ export default function TicketTypeSheet({ visible, eventId, ticketType, onClose,
                             value={form.description}
                             onChangeText={update('description')}
                             error={fieldErrors.description}
-                            maxLength={LIMITS.ticketTypeDescription}
+                            maxLength={EVENT_LIMITS.ticketTypeDescription}
                             multiline
                         />
                         <View style={styles.twoCols}>
@@ -149,9 +153,9 @@ export default function TicketTypeSheet({ visible, eventId, ticketType, onClose,
                             </View>
                             <View style={styles.col}>
                                 <Field
-                                    label="Places en vente"
+                                    label="Nombre de places"
                                     icon="layers-outline"
-                                    placeholder="Quantité"
+                                    placeholder={sold > 0 ? `Min. ${sold}` : 'Quantité'}
                                     value={form.available_quantity}
                                     onChangeText={update('available_quantity', (v) => v.replace(/\D/g, ''))}
                                     error={fieldErrors.available_quantity}

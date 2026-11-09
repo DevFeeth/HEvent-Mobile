@@ -20,7 +20,8 @@ import { COLORS } from '../constants/colors';
 import { useAuth } from '../context/AuthContext';
 import useUnsavedChangesGuard from '../hooks/useUnsavedChangesGuard';
 import { ApiError } from '../utils/ApiError';
-import { LIMITS, PROFILE_RULES, validateForm } from '../utils/validators';
+import { AUTH_LIMITS, PROFILE_RULES } from '../utils/validators/authValidators';
+import { validateForm } from '../utils/validators/common';
 
 const MESSAGES = {
     409: { title: 'E-mail déjà utilisé', message: 'Un autre compte utilise déjà cette adresse e-mail.' },
@@ -106,7 +107,7 @@ export default function ScreenEditProfile() {
                             onChangeText={update('last_name')}
                             error={fieldErrors.last_name}
                             autoComplete="family-name"
-                            maxLength={LIMITS.name}
+                            maxLength={AUTH_LIMITS.name}
                         />
                         <Field
                             label="Prénom"
@@ -116,7 +117,7 @@ export default function ScreenEditProfile() {
                             onChangeText={update('first_name')}
                             error={fieldErrors.first_name}
                             autoComplete="given-name"
-                            maxLength={LIMITS.name}
+                            maxLength={AUTH_LIMITS.name}
                         />
                         <Field
                             label="Adresse e-mail"
@@ -131,7 +132,7 @@ export default function ScreenEditProfile() {
                             value={form.address}
                             onChangeText={update('address')}
                             autoComplete="street-address"
-                            maxLength={LIMITS.address}
+                            maxLength={AUTH_LIMITS.address}
                         />
 
                         <View style={styles.twoCols}>
@@ -145,7 +146,7 @@ export default function ScreenEditProfile() {
                                     error={fieldErrors.postal_code}
                                     keyboardType="number-pad"
                                     autoComplete="postal-code"
-                                    maxLength={LIMITS.postalCode}
+                                    maxLength={AUTH_LIMITS.postalCode}
                                 />
                             </View>
                             <View style={styles.col}>
@@ -155,7 +156,7 @@ export default function ScreenEditProfile() {
                                     placeholder="Ville"
                                     value={form.city}
                                     onChangeText={update('city')}
-                                    maxLength={LIMITS.city}
+                                    maxLength={AUTH_LIMITS.city}
                                 />
                             </View>
                         </View>

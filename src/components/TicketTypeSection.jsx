@@ -10,7 +10,6 @@ import useFetch from '../hooks/useFetch';
 import { getEventTickets } from '../services/ticketService';
 import { deleteTicketType, getTicketTypesByEvent } from '../services/ticketTypeService';
 import { formatPrice } from '../utils/formatPrice';
-import { totalCapacity } from '../utils/validators';
 
 const MESSAGES = {
     409: {
@@ -19,22 +18,28 @@ const MESSAGES = {
     },
 };
 
-const countSold = (tickets) => tickets.filter((t) => t.status !== 'CANCELLED').length;
+// available_quantity = nombre total de billets du type (fixe).
+// Les vendus se calculent à partir des billets de l'événement (hors annulés), par type.
+const countSoldByType = (tickets) =>
+    tickets
+        .filter((t) => t.status !== 'CANCELLED')
+        .reduce((acc, t) => ({ ...acc, [t.ticket_type_id]: (acc[t.ticket_type_id] ?? 0) + 1 }), {});
 const plural = (n, word) => `${n} ${word}${n > 1 ? 's' : ''}`;
 
 export default function TicketTypeSection({ event }) {
     const types = useFetch(() => getTicketTypesByEvent(event.id), [event.id]);
-    const sold = useFetch(() => getEventTickets(event.id).then(countSold), [event.id]);
+    const sold = useFetch(() => getEventTickets(event.id).then(countSoldByType), [event.id]);
 
     const [sheet, setSheet] = useState({ visible: false, ticketType: null });
     const [busyId, setBusyId] = useState(null);
     const [error, setError] = useState(null);
 
     const list = types.data ?? [];
-    const soldCount = sold.data;
-    const ready = types.data != null && soldCount != null;
-    const onSale = list.reduce((sum, t) => sum + t.available_quantity, 0);
-    const total = ready ? totalCapacity(soldCount, list) : null;
+    const soldByType = sold.data ?? {};
+    const ready = types.data != null && sold.data != null;
+    const soldOf = (ticketType) => soldByType[ticketType.id] ?? 0;
+    const total = list.reduce((sum, t) => sum + Number(t.available_quantity), 0);
+    const soldTotal = list.reduce((sum, t) => sum + soldOf(t), 0);
 
     const openSheet = (ticketType = null) => setSheet({ visible: true, ticketType });
     const closeSheet = () => setSheet((s) => ({ ...s, visible: false }));
@@ -45,7 +50,9 @@ export default function TicketTypeSection({ event }) {
     };
 
     const [toDelete, setToDelete] = useState(null);
-    const confirmDelete = (ticketType) => setToDelete(ticketType);
+    // Avec des billets vendus, l'API refuse la suppression : on l'explique directement
+    const confirmDelete = (ticketType) =>
+        soldOf(ticketType) > 0 ? setError(MESSAGES[409]) : setToDelete(ticketType);
 
     const remove = async (ticketType) => {
         setBusyId(ticketType.id);
@@ -79,7 +86,7 @@ export default function TicketTypeSection({ event }) {
                     <View style={styles.capacityText}>
                         <Text style={styles.capacityTotal}>{plural(total, 'place')} au total</Text>
                         <Text style={styles.capacityDetail}>
-                            {plural(soldCount, 'vendue')} · {onSale} en vente
+                            {plural(soldTotal, 'vendue')} · {plural(total - soldTotal, 'restante')}
                         </Text>
                     </View>
                 </View>
@@ -112,7 +119,20 @@ export default function TicketTypeSection({ event }) {
                                         {t.description}
                                     </Text>
                                 )}
-                                <Text style={styles.rowMeta}>{plural(t.available_quantity, 'place')} en vente</Text>
+                                <Text style={styles.rowMeta}>
+                                    {plural(soldOf(t), 'vendu')} / {plural(t.available_quantity, 'place')}
+                                </Text>
+                                <View style={styles.progress}>
+                                    <View
+                                        style={[
+                                            styles.progressFill,
+                                            {
+                                                width: `${Math.min(100, t.available_quantity ? (soldOf(t) / t.available_quantity) * 100 : 0)}%`,
+                                            },
+                                            soldOf(t) >= t.available_quantity && styles.progressFull,
+                                        ]}
+                                    />
+                                </View>
                             </View>
                             <View style={styles.rowActions}>
                                 <Pressable
@@ -158,6 +178,7 @@ export default function TicketTypeSection({ event }) {
                 visible={sheet.visible}
                 eventId={event.id}
                 ticketType={sheet.ticketType}
+                sold={sheet.ticketType ? soldOf(sheet.ticketType) : 0}
                 onClose={closeSheet}
                 onSaved={onSaved}
             />
@@ -235,6 +256,15 @@ const styles = StyleSheet.create({
     rowPrice: { fontSize: 15, fontWeight: '700', color: COLORS.navyLight },
     rowDescription: { fontSize: 13, color: COLORS.navyLight, opacity: 0.8, lineHeight: 18 },
     rowMeta: { fontSize: 12, color: COLORS.textMuted, fontWeight: '600' },
+    progress: {
+        height: 6,
+        borderRadius: 3,
+        backgroundColor: COLORS.background,
+        overflow: 'hidden',
+        marginTop: 4,
+    },
+    progressFill: { height: '100%', borderRadius: 3, backgroundColor: COLORS.navyLight },
+    progressFull: { backgroundColor: COLORS.success },
     rowActions: { flexDirection: 'row', gap: 8 },
     iconButton: {
         width: 36,

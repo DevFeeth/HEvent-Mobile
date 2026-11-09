@@ -5,6 +5,7 @@ import ScreenOrganizer from '../screens/ScreenOrganizer';
 import ScreenEditProfile from '../screens/ScreenEditProfile';
 import ScreenScanQr from '../screens/ScreenScanQr';
 import ScreenEditEvent from '../screens/ScreenEditEvent';
+import ScreenCreateEvent from '../screens/ScreenCreateEvent';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ export default function ProfileStack() {
             <Stack.Screen name="EditProfile" component={ScreenEditProfile} />
             <Stack.Screen name="ScanQr" component={ScreenScanQr} />
             <Stack.Screen name="EditEvent" component={ScreenEditEvent} />
+            <Stack.Screen name="CreateEvent" component={ScreenCreateEvent} />
         </Stack.Navigator>
     );
 }

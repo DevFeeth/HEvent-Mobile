@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-// Demande confirmation avant de quitter un écran avec des modifications non enregistrées :
-// bouton retour de l'écran, geste retour et bouton retour Android passent tous par 'beforeRemove'.
-// À brancher sur une <ConfirmPopup {...popupProps} />.
 export default function useUnsavedChangesGuard(hasChanges) {
     const navigation = useNavigation();
     const [pendingAction, setPendingAction] = useState(null);
@@ -25,8 +22,13 @@ export default function useUnsavedChangesGuard(hasChanges) {
         navigation.goBack();
     };
 
+    const disableGuard = () => {
+        allowLeave.current = true;
+    };
+
     return {
         leaveWithoutPrompt,
+        disableGuard,
         popupProps: {
             visible: !!pendingAction,
             onConfirm: () => {

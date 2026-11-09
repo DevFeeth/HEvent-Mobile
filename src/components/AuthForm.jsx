@@ -18,7 +18,8 @@ import LoadingPopup from './LoadingPopup';
 import { COLORS } from '../constants/colors';
 import { useAuth } from '../context/AuthContext';
 import { ApiError } from '../utils/ApiError';
-import { LIMITS, LOGIN_RULES, REGISTER_RULES, validateForm } from '../utils/validators';
+import { AUTH_LIMITS, LOGIN_RULES, REGISTER_RULES } from '../utils/validators/authValidators';
+import { validateForm } from '../utils/validators/common';
 import Field from './Field';
 
 const heroImage = require('../assets/images/connectionCard.png');
@@ -122,7 +123,7 @@ export default function AuthForm() {
                                 onChangeText={update('first_name')}
                                 error={fieldErrors.first_name}
                                 autoComplete="given-name"
-                                maxLength={LIMITS.name}
+                                maxLength={AUTH_LIMITS.name}
                             />
                             <Field
                                 label="Nom"
@@ -132,7 +133,7 @@ export default function AuthForm() {
                                 onChangeText={update('last_name')}
                                 error={fieldErrors.last_name}
                                 autoComplete="family-name"
-                                maxLength={LIMITS.name}
+                                maxLength={AUTH_LIMITS.name}
                             />
                         </>
                     )}
@@ -147,7 +148,7 @@ export default function AuthForm() {
                         autoCapitalize="none"
                         autoComplete="email"
                         keyboardType="email-address"
-                        maxLength={LIMITS.email}
+                        maxLength={AUTH_LIMITS.email}
                     />
 
                     <Field
@@ -160,7 +161,7 @@ export default function AuthForm() {
                         autoCapitalize="none"
                         autoComplete={isRegister ? 'new-password' : 'current-password'}
                         secureTextEntry={!showPassword}
-                        maxLength={LIMITS.passwordMax}
+                        maxLength={AUTH_LIMITS.passwordMax}
                         onSubmitEditing={submit}
                         right={
                             <Pressable onPress={() => setShowPassword((s) => !s)} hitSlop={10}>
@@ -227,7 +228,6 @@ export default function AuthForm() {
             <ErrorPopup
                 error={error}
                 onClose={() => setError(null)}
-                // Réessayer seulement pour une erreur de l'API, pas pour un message écrit à la main
                 onRetry={error instanceof ApiError ? submit : undefined}
                 messages={AUTH_MESSAGES}
             />
