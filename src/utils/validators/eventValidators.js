@@ -106,8 +106,6 @@ export function validatePrice(value) {
     return null;
 }
 
-// available_quantity = nombre total de billets de ce type (il ne baisse pas à la vente)
-// sold : billets déjà vendus de ce type → on ne peut pas descendre en dessous
 export function validateQuantity(value, sold = 0) {
     const v = clean(value);
     if (!v) return 'Quantité requise';
