@@ -5,13 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b6bdfc93-7ebd-43e7-aeff-8812c03a45bf" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DBNavigator.Project.Workspace.Settings">
+    <assistant-settings>
+      <credential-settings>
+        <credentials />
+      </credential-settings>
+      <profile-settings>
+        <profiles />
+      </profile-settings>
+      <mcp-server-settings>
+        <workspace-integration value="false" />
+        <mcp-servers />
+        <mcp-tool-approvals />
+      </mcp-server-settings>
+    </assistant-settings>
   </component>
   <component name="DatabaseLocalColorSettings">
     <colors>
@@ -28,63 +45,75 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Florian1801"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/DevFeeth/HEvent-Mobile.git",
+    "accountId": "af6c0e75-4b54-4a8c-b9db-b079b82b48e7"
+  }
+}]]></component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.000023778215932" />
-      <entry key="MS500" value="1.1189147845414749" />
-      <entry key="S2" value="1.5872309892301946" />
-      <entry key="S5" value="1.8098864109405084" />
-      <entry key="S10" value="2.059048143303552" />
-      <entry key="S30" value="9.330698602128997" />
-      <entry key="S60" value="26.049567590855798" />
-      <entry key="M2" value="47.023656440193676" />
-      <entry key="M5" value="68.2351243440142" />
-      <entry key="M10" value="77.8546162674003" />
-      <entry key="M15" value="84.556168060947" />
-      <entry key="M30" value="124.87569032498428" />
-      <entry key="H1" value="255.2643778133515" />
-      <entry key="H2" value="483.7534472300094" />
-      <entry key="H4" value="724.1003463730256" />
-      <entry key="D1" value="1056.9018088387297" />
-      <entry key="W1" value="1131.8785441012203" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="4.063655387038913E-139" />
+      <entry key="S10" value="3.9610817154540614E-69" />
+      <entry key="S30" value="2.359947763250418E-22" />
+      <entry key="S60" value="1.5404125746640872E-10" />
+      <entry key="M2" value="1.4963678663113588E-4" />
+      <entry key="M5" value="0.6990671172363188" />
+      <entry key="M10" value="13.396137474818609" />
+      <entry key="M15" value="38.371985803861875" />
+      <entry key="M30" value="129.70250345392193" />
+      <entry key="H1" value="302.4534866499506" />
+      <entry key="H2" value="530.4879429759059" />
+      <entry key="H4" value="736.1366664276255" />
+      <entry key="D1" value="992.7357615779524" />
+      <entry key="W1" value="1047.5079140265734" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="2.1288344339682607E-166" />
-      <entry key="MS500" value="7.3388561863757015E-34" />
-      <entry key="S2" value="5.2048365338087445E-9" />
-      <entry key="S5" value="4.8596167829770157E-4" />
-      <entry key="S10" value="0.022252936897965533" />
-      <entry key="S30" value="0.3397705615783173" />
-      <entry key="S60" value="0.7732013840730179" />
-      <entry key="M2" value="1.221323068765574" />
-      <entry key="M5" value="1.6355226451053442" />
-      <entry key="M10" value="1.8402217166540644" />
-      <entry key="M15" value="2.0036832179027306" />
-      <entry key="M30" value="2.9235281311108023" />
-      <entry key="H1" value="6.035422214326087" />
-      <entry key="H2" value="11.272360930750303" />
-      <entry key="H4" value="16.457735028557522" />
-      <entry key="D1" value="23.256891235251835" />
-      <entry key="W1" value="24.741682488961835" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0" />
+      <entry key="S60" value="1.0000000000008928" />
+      <entry key="M2" value="1.0000009449650573" />
+      <entry key="M5" value="1.0040455400420412" />
+      <entry key="M10" value="1.0957059395289972" />
+      <entry key="M15" value="1.3809680233000188" />
+      <entry key="M30" value="3.167688564564147" />
+      <entry key="H1" value="7.2771538085024385" />
+      <entry key="H2" value="12.422533314531226" />
+      <entry key="H4" value="16.7289415455443" />
+      <entry key="D1" value="21.77948261202785" />
+      <entry key="W1" value="22.820710001142423" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9138402750599051" />
-      <entry key="MS500" value="1.0796702802851044" />
-      <entry key="S2" value="1.5543418985239152" />
-      <entry key="S5" value="1.7926217102737831" />
-      <entry key="S10" value="2.0691409464979995" />
-      <entry key="S30" value="9.651463506404959" />
-      <entry key="S60" value="26.801941044461124" />
-      <entry key="M2" value="48.228507806289684" />
-      <entry key="M5" value="69.86178960204525" />
-      <entry key="M10" value="79.68987553115696" />
-      <entry key="M15" value="86.55620007119406" />
-      <entry key="M30" value="127.79570284702986" />
-      <entry key="H1" value="261.29461617914245" />
-      <entry key="H2" value="495.0200450002198" />
-      <entry key="H4" value="740.5535016410269" />
-      <entry key="D1" value="1080.1575398351067" />
-      <entry key="W1" value="1156.620047971914" />
+      <entry key="MS100" value="4.163256307460726E-4" />
+      <entry key="MS500" value="0.21080777756252808" />
+      <entry key="S2" value="0.6775972853771345" />
+      <entry key="S5" value="0.8558322798833996" />
+      <entry key="S10" value="0.925112036395268" />
+      <entry key="S30" value="0.9743869163976545" />
+      <entry key="S60" value="0.9871103872938551" />
+      <entry key="M2" value="0.9936848482594937" />
+      <entry key="M5" value="1.7004751038195853" />
+      <entry key="M10" value="14.489871714534187" />
+      <entry key="M15" value="39.75020234622907" />
+      <entry key="M30" value="132.86454673198907" />
+      <entry key="H1" value="309.7229624966986" />
+      <entry key="H2" value="542.90336989874" />
+      <entry key="H4" value="752.8605727030542" />
+      <entry key="D1" value="1014.5140941582683" />
+      <entry key="W1" value="1070.3284502019192" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -96,26 +125,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;nolan&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/nolan/IdeaProjects/HEvent-Mobile/src/assets&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\nolan\\AppData\\Local\\Programs\\IntelliJ IDEA\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "florian",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/nolan/IdeaProjects/HEvent-Mobile/src/assets",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Users\\nolan\\AppData\\Local\\Programs\\IntelliJ IDEA\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\nolan\IdeaProjects\HEvent-Mobile\src\assets" />
