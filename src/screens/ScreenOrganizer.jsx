@@ -32,7 +32,6 @@ export default function ScreenOrganizer() {
     const { data: categories } = useFetch(getCategories);
     const [error, setError] = useState(null);
 
-    // name → label, ex. { PARTY: 'Soirée' } ; tant que la liste n'est pas chargée, on affiche le name
     const categoryLabel = (name) => categories?.find((c) => c.name === name)?.label ?? name;
     const [deleting, setDeleting] = useState(false);
 

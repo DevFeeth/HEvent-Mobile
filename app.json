@@ -22,7 +22,14 @@
     },
     "plugins": [
       "expo-secure-store",
-      "expo-status-bar"
+      "expo-status-bar",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "HEvent utilise la caméra pour scanner les QR codes des billets à l’entrée.",
+          "recordAudioAndroid": false
+        }
+      ]
     ]
   }
 }

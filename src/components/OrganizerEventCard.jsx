@@ -10,7 +10,7 @@ const STATUS_LABELS = {
     FINISHED: 'Terminé',
 };
 
-export default function OrganizerEventCard({ event, categoryLabel, onEdit, onDelete }) {
+export default function OrganizerEventCard({ event, categoryLabel, onScan, onEdit, onDelete }) {
     const status = STATUS_LABELS[event.status];
 
     return (
@@ -43,7 +43,7 @@ export default function OrganizerEventCard({ event, categoryLabel, onEdit, onDel
 
             <View style={styles.actions}>
                 <Pressable
-                    onPress={onEdit}
+                    onPress={onScan}
                     style={({ pressed }) => [styles.action, styles.edit, pressed && styles.pressed]}
                 >
                     <Ionicons name="qr-code-outline" size={16} color={COLORS.navy} />

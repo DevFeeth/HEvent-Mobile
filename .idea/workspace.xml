@@ -5,10 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b6bdfc93-7ebd-43e7-aeff-8812c03a45bf" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/AuthForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AuthForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/OrganizerEventCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/OrganizerEventCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/constants/colors.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants/colors.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/navigation/ProfileStack.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/navigation/ProfileStack.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/ScreenEditProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/ScreenEditProfile.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/ScreenOrganizer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/ScreenOrganizer.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,75 +51,75 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Florian1801"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Florian1801&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/DevFeeth/HEvent-Mobile.git",
-    "accountId": "af6c0e75-4b54-4a8c-b9db-b079b82b48e7"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/DevFeeth/HEvent-Mobile.git&quot;,
+    &quot;accountId&quot;: &quot;af6c0e75-4b54-4a8c-b9db-b079b82b48e7&quot;
   }
-}]]></component>
+}</component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="0.0" />
-      <entry key="S5" value="4.063655387038913E-139" />
-      <entry key="S10" value="3.9610817154540614E-69" />
-      <entry key="S30" value="2.359947763250418E-22" />
-      <entry key="S60" value="1.5404125746640872E-10" />
-      <entry key="M2" value="1.4963678663113588E-4" />
-      <entry key="M5" value="0.6990671172363188" />
-      <entry key="M10" value="13.396137474818609" />
-      <entry key="M15" value="38.371985803861875" />
-      <entry key="M30" value="129.70250345392193" />
-      <entry key="H1" value="302.4534866499506" />
-      <entry key="H2" value="530.4879429759059" />
-      <entry key="H4" value="736.1366664276255" />
-      <entry key="D1" value="992.7357615779524" />
-      <entry key="W1" value="1047.5079140265734" />
-    </decayedCancelled>
-    <decayedSelected>
       <entry key="MS100" value="1.0" />
       <entry key="MS500" value="1.0" />
       <entry key="S2" value="1.0" />
       <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.0" />
-      <entry key="S30" value="1.0" />
-      <entry key="S60" value="1.0000000000008928" />
-      <entry key="M2" value="1.0000009449650573" />
-      <entry key="M5" value="1.0040455400420412" />
-      <entry key="M10" value="1.0957059395289972" />
-      <entry key="M15" value="1.3809680233000188" />
-      <entry key="M30" value="3.167688564564147" />
-      <entry key="H1" value="7.2771538085024385" />
-      <entry key="H2" value="12.422533314531226" />
-      <entry key="H4" value="16.7289415455443" />
-      <entry key="D1" value="21.77948261202785" />
-      <entry key="W1" value="22.820710001142423" />
+      <entry key="S10" value="1.0000000000000049" />
+      <entry key="S30" value="1.0000168861504648" />
+      <entry key="S60" value="1.0041093255437048" />
+      <entry key="M2" value="1.0646805502962557" />
+      <entry key="M5" value="1.5049177177388344" />
+      <entry key="M10" value="4.2376302406810815" />
+      <entry key="M15" value="12.981836471347346" />
+      <entry key="M30" value="69.40860258540594" />
+      <entry key="H1" value="219.2217232834738" />
+      <entry key="H2" value="452.2779164478024" />
+      <entry key="H4" value="682.1672922835993" />
+      <entry key="D1" value="987.0887304390919" />
+      <entry key="W1" value="1054.2868022679868" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="8.842843636225201E-278" />
+      <entry key="S5" value="1.5088177281954989E-111" />
+      <entry key="S10" value="3.884350303712961E-56" />
+      <entry key="S30" value="3.3866693425753703E-19" />
+      <entry key="S60" value="5.819509723835348E-10" />
+      <entry key="M2" value="2.412368280819085E-5" />
+      <entry key="M5" value="0.014280081661723442" />
+      <entry key="M10" value="0.13067203533098" />
+      <entry key="M15" value="0.3345872460951482" />
+      <entry key="M30" value="1.5592126756415254" />
+      <entry key="H1" value="5.10555541294219" />
+      <entry key="H2" value="10.405210968762317" />
+      <entry key="H4" value="15.31048060389496" />
+      <entry key="D1" value="21.46022570149226" />
+      <entry key="W1" value="22.77261847708811" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="4.163256307460726E-4" />
-      <entry key="MS500" value="0.21080777756252808" />
-      <entry key="S2" value="0.6775972853771345" />
-      <entry key="S5" value="0.8558322798833996" />
-      <entry key="S10" value="0.925112036395268" />
-      <entry key="S30" value="0.9743869163976545" />
-      <entry key="S60" value="0.9871103872938551" />
-      <entry key="M2" value="0.9936848482594937" />
-      <entry key="M5" value="1.7004751038195853" />
-      <entry key="M10" value="14.489871714534187" />
-      <entry key="M15" value="39.75020234622907" />
-      <entry key="M30" value="132.86454673198907" />
-      <entry key="H1" value="309.7229624966986" />
-      <entry key="H2" value="542.90336989874" />
-      <entry key="H4" value="752.8605727030542" />
-      <entry key="D1" value="1014.5140941582683" />
-      <entry key="W1" value="1070.3284502019192" />
+      <entry key="MS100" value="3.094358764007655E-5" />
+      <entry key="MS500" value="0.12534705448763472" />
+      <entry key="S2" value="0.5950158481533379" />
+      <entry key="S5" value="0.8124776317624249" />
+      <entry key="S10" value="0.9013754111148327" />
+      <entry key="S30" value="0.9659978491119806" />
+      <entry key="S60" value="0.9869523005985364" />
+      <entry key="M2" value="1.0560863418045914" />
+      <entry key="M5" value="1.5156801861693616" />
+      <entry key="M10" value="4.366261354009071" />
+      <entry key="M15" value="13.314506818686947" />
+      <entry key="M30" value="70.96436660279277" />
+      <entry key="H1" value="224.3215388516745" />
+      <entry key="H2" value="462.6769927119757" />
+      <entry key="H4" value="697.473071756274" />
+      <entry key="D1" value="1008.5478072536167" />
+      <entry key="W1" value="1077.0592450346026" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -132,7 +138,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "florian",
+    "git-widget-placeholder": "nolan",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/nolan/IdeaProjects/HEvent-Mobile/src/assets",
     "node.js.detected.package.eslint": "true",

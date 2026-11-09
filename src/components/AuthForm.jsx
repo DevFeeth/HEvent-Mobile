@@ -18,6 +18,7 @@ import LoadingPopup from './LoadingPopup';
 import { COLORS } from '../constants/colors';
 import { useAuth } from '../context/AuthContext';
 import { ApiError } from '../utils/ApiError';
+import { LIMITS, LOGIN_RULES, REGISTER_RULES, validateForm } from '../utils/validators';
 import Field from './Field';
 
 const heroImage = require('../assets/images/connectionCard.png');
@@ -27,21 +28,6 @@ const AUTH_MESSAGES = {
     401: { title: 'Connexion impossible', message: 'E-mail ou mot de passe incorrect.' },
     409: { title: 'Compte existant', message: 'Un compte existe déjà avec cet e-mail, connectez-vous.' },
 };
-
-function validate(mode, form) {
-    const errors = {};
-    if (mode === 'register') {
-        if (!form.first_name.trim()) errors.first_name = 'Prénom requis';
-        if (!form.last_name.trim()) errors.last_name = 'Nom requis';
-    }
-    if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) errors.email = 'E-mail invalide';
-    if (mode === 'register' && form.password.length < 8) {
-        errors.password = '8 caractères minimum';
-    } else if (!form.password) {
-        errors.password = 'Mot de passe requis';
-    }
-    return errors;
-}
 
 export default function AuthForm() {
     const { login, register } = useAuth();
@@ -69,7 +55,7 @@ export default function AuthForm() {
         });
 
     const submit = async () => {
-        const errors = validate(mode, form);
+        const errors = validateForm(form, isRegister ? REGISTER_RULES : LOGIN_RULES);
         setFieldErrors(errors);
         setError(null);
         if (Object.keys(errors).length) return;
@@ -136,7 +122,7 @@ export default function AuthForm() {
                                 onChangeText={update('first_name')}
                                 error={fieldErrors.first_name}
                                 autoComplete="given-name"
-                                maxLength={50}
+                                maxLength={LIMITS.name}
                             />
                             <Field
                                 label="Nom"
@@ -146,7 +132,7 @@ export default function AuthForm() {
                                 onChangeText={update('last_name')}
                                 error={fieldErrors.last_name}
                                 autoComplete="family-name"
-                                maxLength={50}
+                                maxLength={LIMITS.name}
                             />
                         </>
                     )}
@@ -161,7 +147,7 @@ export default function AuthForm() {
                         autoCapitalize="none"
                         autoComplete="email"
                         keyboardType="email-address"
-                        maxLength={254}
+                        maxLength={LIMITS.email}
                     />
 
                     <Field
@@ -174,7 +160,7 @@ export default function AuthForm() {
                         autoCapitalize="none"
                         autoComplete={isRegister ? 'new-password' : 'current-password'}
                         secureTextEntry={!showPassword}
-                        maxLength={72}
+                        maxLength={LIMITS.passwordMax}
                         onSubmitEditing={submit}
                         right={
                             <Pressable onPress={() => setShowPassword((s) => !s)} hitSlop={10}>
