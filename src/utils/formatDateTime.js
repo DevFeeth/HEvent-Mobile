@@ -34,3 +34,18 @@ export function maskTimeInput(text) {
     const digits = text.replace(/\D/g, '').slice(0, 4);
     return digits.length > 2 ? `${digits.slice(0, 2)}:${digits.slice(2)}` : digits;
 }
+
+const DAYS = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
+const MONTHS = [
+    'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre',
+];
+
+// "2026-07-12T00:00:00.000Z" → "sam. 12 juillet" (date à minuit UTC : on lit en UTC)
+export function formatLongDate(isoDate) {
+    const d = new Date(isoDate);
+    return `${DAYS[d.getUTCDay()]} ${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
+}
+
+// start_time / end_time de l'API → "20:00 – 23:30"
+export const formatTimeRange = (start, end) => `${isoToTimeInput(start)} – ${isoToTimeInput(end)}`;
