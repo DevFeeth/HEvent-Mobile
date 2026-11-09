@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+import ConfirmPopup from './ConfirmPopup';
 import ErrorPopup from './ErrorPopup';
 import TicketTypeSheet from './TicketTypeSheet';
 import { COLORS } from '../constants/colors';
@@ -43,11 +44,8 @@ export default function TicketTypeSection({ event }) {
         types.refetch();
     };
 
-    const confirmDelete = (ticketType) =>
-        Alert.alert('Supprimer le type de billet', `Supprimer « ${ticketType.name} » ?`, [
-            { text: 'Annuler', style: 'cancel' },
-            { text: 'Supprimer', style: 'destructive', onPress: () => remove(ticketType) },
-        ]);
+    const [toDelete, setToDelete] = useState(null);
+    const confirmDelete = (ticketType) => setToDelete(ticketType);
 
     const remove = async (ticketType) => {
         setBusyId(ticketType.id);
@@ -164,6 +162,19 @@ export default function TicketTypeSection({ event }) {
                 onSaved={onSaved}
             />
             <ErrorPopup error={error} onClose={() => setError(null)} messages={MESSAGES} />
+            <ConfirmPopup
+                visible={!!toDelete}
+                title="Supprimer le type de billet ?"
+                message={`Voulez-vous vraiment supprimer « ${toDelete?.name ?? ''} » ? Cette action est définitive.`}
+                confirmLabel="Supprimer"
+                destructive
+                onConfirm={() => {
+                    const ticketType = toDelete;
+                    setToDelete(null);
+                    remove(ticketType);
+                }}
+                onCancel={() => setToDelete(null)}
+            />
         </View>
     );
 }

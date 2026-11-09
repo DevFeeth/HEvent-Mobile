@@ -12,11 +12,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
+import ConfirmPopup from '../components/ConfirmPopup';
 import ErrorPopup from '../components/ErrorPopup';
 import Field from '../components/Field';
 import LoadingPopup from '../components/LoadingPopup';
 import { COLORS } from '../constants/colors';
 import { useAuth } from '../context/AuthContext';
+import useUnsavedChangesGuard from '../hooks/useUnsavedChangesGuard';
 import { ApiError } from '../utils/ApiError';
 import { LIMITS, PROFILE_RULES, validateForm } from '../utils/validators';
 
@@ -28,17 +30,21 @@ export default function ScreenEditProfile() {
     const navigation = useNavigation();
     const { user, updateProfile } = useAuth();
 
-    const [form, setForm] = useState({
+    const [initial] = useState(() => ({
         last_name: user.last_name ?? '',
         first_name: user.first_name ?? '',
         email: user.email ?? '',
         address: user.address ?? '',
         postal_code: user.postal_code ? String(user.postal_code) : '',
         city: user.city ?? '',
-    });
+    }));
+    const [form, setForm] = useState(initial);
     const [fieldErrors, setFieldErrors] = useState({});
     const [error, setError] = useState(null);
     const [submitting, setSubmitting] = useState(false);
+
+    const hasChanges = Object.keys(initial).some((field) => form[field].trim() !== initial[field].trim());
+    const { leaveWithoutPrompt, popupProps: leavePopup } = useUnsavedChangesGuard(hasChanges);
 
     const update = (field) => (value) => setForm((f) => ({ ...f, [field]: value }));
 
@@ -57,7 +63,7 @@ export default function ScreenEditProfile() {
                 postal_code: form.postal_code.trim(),
                 city: form.city.trim(),
             });
-            navigation.goBack();
+            leaveWithoutPrompt();
         } catch (err) {
             setError(err);
         } finally {
@@ -182,6 +188,16 @@ export default function ScreenEditProfile() {
                 onClose={() => setError(null)}
                 onRetry={error instanceof ApiError ? submit : undefined}
                 messages={MESSAGES}
+            />
+
+            <ConfirmPopup
+                {...leavePopup}
+                title="Annuler les modifications ?"
+                message="Les changements apportés à votre compte ne seront pas enregistrés."
+                confirmLabel="Quitter sans enregistrer"
+                cancelLabel="Continuer la modification"
+                icon="create-outline"
+                destructive
             />
         </SafeAreaView>
     );

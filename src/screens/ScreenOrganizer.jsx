@@ -1,10 +1,11 @@
 import { useCallback, useRef, useState } from 'react';
-import { Alert, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
+import ConfirmPopup from '../components/ConfirmPopup';
 import ErrorPopup from '../components/ErrorPopup';
 import LoadingPopup from '../components/LoadingPopup';
 import OrganizerEventCard from '../components/OrganizerEventCard';
@@ -45,12 +46,9 @@ export default function ScreenOrganizer() {
 
     const categoryLabel = (name) => categories?.find((c) => c.name === name)?.label ?? name;
     const [deleting, setDeleting] = useState(false);
+    const [toDelete, setToDelete] = useState(null);
 
-    const confirmDelete = (event) =>
-        Alert.alert('Supprimer l’événement', `Supprimer « ${event.name} » ? Cette action est définitive.`, [
-            { text: 'Annuler', style: 'cancel' },
-            { text: 'Supprimer', style: 'destructive', onPress: () => remove(event) },
-        ]);
+    const confirmDelete = (event) => setToDelete(event);
 
     const remove = async (event) => {
         setDeleting(true);
@@ -150,6 +148,20 @@ export default function ScreenOrganizer() {
             />
             <ErrorPopup error={loadError} onClose={() => navigation.goBack()} onRetry={refetch} />
             <ErrorPopup error={error} onClose={() => setError(null)} messages={DELETE_MESSAGES} />
+
+            <ConfirmPopup
+                visible={!!toDelete}
+                title="Supprimer l’événement ?"
+                message={`Voulez-vous vraiment supprimer « ${toDelete?.name ?? ''} » ? Cette action est définitive.`}
+                confirmLabel="Supprimer"
+                destructive
+                onConfirm={() => {
+                    const event = toDelete;
+                    setToDelete(null);
+                    remove(event);
+                }}
+                onCancel={() => setToDelete(null)}
+            />
         </SafeAreaView>
     );
 }

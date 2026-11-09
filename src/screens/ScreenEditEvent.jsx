@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import {
-    Alert,
     Image,
     KeyboardAvoidingView,
     Platform,
@@ -14,12 +13,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
+import ConfirmPopup from '../components/ConfirmPopup';
 import ErrorPopup from '../components/ErrorPopup';
 import Field from '../components/Field';
 import LoadingPopup from '../components/LoadingPopup';
 import TicketTypeSection from '../components/TicketTypeSection';
 import { COLORS } from '../constants/colors';
 import useFetch from '../hooks/useFetch';
+import useUnsavedChangesGuard from '../hooks/useUnsavedChangesGuard';
 import { getCategories } from '../services/categoryService';
 import { updateEvent } from '../services/eventService';
 import { ApiError } from '../utils/ApiError';
@@ -100,6 +101,8 @@ export default function ScreenEditEvent() {
             .map((field) => [field, true])
     );
     const hasChanges = Object.keys(changed).length > 0;
+    const { leaveWithoutPrompt, popupProps: leavePopup } = useUnsavedChangesGuard(hasChanges);
+    const [confirmCancelEvent, setConfirmCancelEvent] = useState(false);
 
     const validate = () => {
         const errors = validateEventForm(form, changed);
@@ -116,7 +119,7 @@ export default function ScreenEditEvent() {
                 Object.keys(changed).map((field) => [field, TO_API[field](form[field])])
             );
             await updateEvent(event.id, changes);
-            navigation.goBack();
+            leaveWithoutPrompt();
         } catch (err) {
             const refusal = err instanceof ApiError ? REFUSALS[err.message] : null;
             setError(refusal ?? err);
@@ -135,29 +138,14 @@ export default function ScreenEditEvent() {
             return;
         }
         if (changed.status && form.status === 'CANCELLED') {
-            Alert.alert(
-                'Annuler l’événement',
-                `« ${form.name.trim()} » sera affiché comme annulé aux participants.`,
-                [
-                    { text: 'Retour', style: 'cancel' },
-                    { text: 'Confirmer', style: 'destructive', onPress: save },
-                ]
-            );
+            setConfirmCancelEvent(true);
             return;
         }
         save();
     };
 
-    const confirmLeave = () => {
-        if (!hasChanges) {
-            navigation.goBack();
-            return;
-        }
-        Alert.alert('Quitter sans enregistrer ?', 'Vos modifications seront perdues.', [
-            { text: 'Rester', style: 'cancel' },
-            { text: 'Quitter', style: 'destructive', onPress: () => navigation.goBack() },
-        ]);
-    };
+    // La confirmation (s'il y a des modifications) est gérée par useUnsavedChangesGuard
+    const confirmLeave = () => navigation.goBack();
 
     const imageUrl = form.image_url.trim();
     const showPreview = /^https?:\/\//i.test(imageUrl) && !fieldErrors.image_url;
@@ -345,6 +333,31 @@ export default function ScreenEditEvent() {
                 onClose={() => setError(null)}
                 onRetry={error instanceof ApiError && error.status === 0 ? save : undefined}
                 messages={MESSAGES}
+            />
+
+            <ConfirmPopup
+                {...leavePopup}
+                title="Annuler les modifications ?"
+                message="Les changements apportés à l’événement ne seront pas enregistrés."
+                confirmLabel="Quitter sans enregistrer"
+                cancelLabel="Continuer la modification"
+                icon="create-outline"
+                destructive
+            />
+
+            <ConfirmPopup
+                visible={confirmCancelEvent}
+                title="Annuler l’événement ?"
+                message={`« ${form.name.trim()} » sera affiché comme annulé aux participants.`}
+                confirmLabel="Oui, annuler l’événement"
+                cancelLabel="Retour"
+                icon="close-circle-outline"
+                destructive
+                onConfirm={() => {
+                    setConfirmCancelEvent(false);
+                    save();
+                }}
+                onCancel={() => setConfirmCancelEvent(false)}
             />
         </SafeAreaView>
     );
