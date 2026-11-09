@@ -18,6 +18,7 @@ import LoadingPopup from './LoadingPopup';
 import { COLORS } from '../constants/colors';
 import { useAuth } from '../context/AuthContext';
 import { ApiError } from '../utils/ApiError';
+import Field from './Field';
 
 const heroImage = require('../assets/images/connectionCard.png');
 const EMPTY_FORM = { first_name: '', last_name: '', email: '', password: '' };
@@ -248,24 +249,6 @@ export default function AuthForm() {
     );
 }
 
-function Field({ label, icon, error, right, ...inputProps }) {
-    return (
-        <View style={styles.field}>
-            <Text style={styles.label}>{label}</Text>
-            <View style={[styles.inputRow, error && styles.inputRowError]}>
-                <Ionicons name={icon} size={20} color={COLORS.navy} />
-                <TextInput
-                    style={styles.input}
-                    placeholderTextColor={COLORS.textMuted}
-                    {...inputProps}
-                />
-                {right}
-            </View>
-            {error && <Text style={styles.fieldError}>{error}</Text>}
-        </View>
-    );
-}
-
 const styles = StyleSheet.create({
     flex: {
         flex: 1,
@@ -322,39 +305,6 @@ const styles = StyleSheet.create({
         opacity: 0.7,
         marginTop: 4,
         marginBottom: 22,
-    },
-    field: {
-        marginBottom: 16,
-    },
-    label: {
-        fontSize: 15,
-        fontWeight: '600',
-        color: COLORS.text,
-        marginBottom: 8,
-    },
-    inputRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 10,
-        backgroundColor: COLORS.white,
-        borderColor: COLORS.border,
-        borderWidth: 1,
-        borderRadius: 14,
-        paddingHorizontal: 14,
-        height: 52,
-    },
-    inputRowError: {
-        borderColor: COLORS.error,
-    },
-    input: {
-        flex: 1,
-        fontSize: 16,
-        color: COLORS.text,
-    },
-    fieldError: {
-        color: COLORS.error,
-        fontSize: 13,
-        marginTop: 4,
     },
     forgot: {
         alignSelf: 'flex-end',

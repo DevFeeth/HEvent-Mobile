@@ -20,3 +20,5 @@ export const getMyOrders = () => api.get('/users/me/orders');
 
 // Événements de l'organisateur connecté, brouillons compris
 export const getMyEvents = () => api.get('/users/me/events');
+
+export const updateMe = (data) => api.patch('/users/me', data);

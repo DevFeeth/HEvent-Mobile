@@ -24,11 +24,7 @@ export default function UserProfile({ user, onLogout }) {
         { icon: 'location-outline', label: 'Ville', value: user.city },
     ].filter((row) => row.value);
 
-    const editProfile = () =>
-        setError({
-            title: 'Pas encore disponible',
-            message: "La modification du profil n'est pas encore disponible.",
-        });
+    const editProfile = () => navigation.navigate('EditProfile');
 
     return (
         <View style={styles.flex}>

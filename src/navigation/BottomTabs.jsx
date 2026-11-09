@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import TabBarIcon from '../components/TabBarIcon';
@@ -17,6 +17,23 @@ const ICONS = {
     Profile: 'person-outline',
 };
 
+function TabButton({ children, onPress, onLongPress, style, accessibilityState, accessibilityLabel, testID }) {
+    return (
+        <Pressable
+            onPress={onPress}
+            onLongPress={onLongPress}
+            accessibilityRole="button"
+            accessibilityState={accessibilityState}
+            accessibilityLabel={accessibilityLabel}
+            testID={testID}
+            android_ripple={null}
+            style={style}
+        >
+            {children}
+        </Pressable>
+    );
+}
+
 export default function BottomTabs() {
     return (
         <Tab.Navigator
@@ -26,6 +43,7 @@ export default function BottomTabs() {
                 tabBarShowLabel: false,
                 tabBarStyle: styles.tabBar,
                 tabBarItemStyle: styles.tabItem,
+                tabBarButton: (props) => <TabButton {...props} />,
                 tabBarIcon: ({ focused }) => <TabBarIcon name={ICONS[route.name]} focused={focused} />,
             })}
         >
