@@ -5,16 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b6bdfc93-7ebd-43e7-aeff-8812c03a45bf" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/utils/formatDateTime.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0cd8e574-362c-4d82-90bc-3ba3deb967a8.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/0cd8e574-362c-4d82-90bc-3ba3deb967a8.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AuthForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AuthForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Field.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Field.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/OrganizerEventCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/OrganizerEventCard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/constants/colors.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants/colors.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/navigation/ProfileStack.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/navigation/ProfileStack.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/ScreenEditProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/ScreenEditProfile.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screens/ScreenOrganizer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/ScreenOrganizer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/ScreenScanQr.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/ScreenScanQr.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/eventService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/eventService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/ticketService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/ticketService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/format.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/validators.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/validators.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,57 +71,57 @@
       <entry key="MS500" value="1.0" />
       <entry key="S2" value="1.0" />
       <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.0000000000000049" />
-      <entry key="S30" value="1.0000168861504648" />
-      <entry key="S60" value="1.0041093255437048" />
-      <entry key="M2" value="1.0646805502962557" />
-      <entry key="M5" value="1.5049177177388344" />
-      <entry key="M10" value="4.2376302406810815" />
-      <entry key="M15" value="12.981836471347346" />
-      <entry key="M30" value="69.40860258540594" />
-      <entry key="H1" value="219.2217232834738" />
-      <entry key="H2" value="452.2779164478024" />
-      <entry key="H4" value="682.1672922835993" />
-      <entry key="D1" value="987.0887304390919" />
-      <entry key="W1" value="1054.2868022679868" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0" />
+      <entry key="S60" value="1.0000000056222849" />
+      <entry key="M2" value="1.000196064868024" />
+      <entry key="M5" value="1.1871653100903532" />
+      <entry key="M10" value="3.734478250332167" />
+      <entry key="M15" value="8.712217992969844" />
+      <entry key="M30" value="37.605863952981764" />
+      <entry key="H1" value="144.48190011850275" />
+      <entry key="H2" value="364.928719548729" />
+      <entry key="H4" value="622.5453389049632" />
+      <entry key="D1" value="1007.0568727713626" />
+      <entry key="W1" value="1097.1241625182292" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
       <entry key="MS500" value="0.0" />
-      <entry key="S2" value="8.842843636225201E-278" />
-      <entry key="S5" value="1.5088177281954989E-111" />
-      <entry key="S10" value="3.884350303712961E-56" />
-      <entry key="S30" value="3.3866693425753703E-19" />
-      <entry key="S60" value="5.819509723835348E-10" />
-      <entry key="M2" value="2.412368280819085E-5" />
-      <entry key="M5" value="0.014280081661723442" />
-      <entry key="M10" value="0.13067203533098" />
-      <entry key="M15" value="0.3345872460951482" />
-      <entry key="M30" value="1.5592126756415254" />
-      <entry key="H1" value="5.10555541294219" />
-      <entry key="H2" value="10.405210968762317" />
-      <entry key="H4" value="15.31048060389496" />
-      <entry key="D1" value="21.46022570149226" />
-      <entry key="W1" value="22.77261847708811" />
+      <entry key="S2" value="6.389268876405112E-283" />
+      <entry key="S5" value="1.3248919638585392E-113" />
+      <entry key="S10" value="3.639906542561964E-57" />
+      <entry key="S30" value="1.5382611709573404E-19" />
+      <entry key="S60" value="3.9220672749933043E-10" />
+      <entry key="M2" value="1.980420994324683E-5" />
+      <entry key="M5" value="0.013149602569150499" />
+      <entry key="M10" value="0.1173985575319277" />
+      <entry key="M15" value="0.26152597508081976" />
+      <entry key="M30" value="0.9165098221674732" />
+      <entry key="H1" value="3.3803955872546254" />
+      <entry key="H2" value="8.37835501093039" />
+      <entry key="H4" value="13.949867367312436" />
+      <entry key="D1" value="21.877765144979627" />
+      <entry key="W1" value="23.683446505304303" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="3.094358764007655E-5" />
-      <entry key="MS500" value="0.12534705448763472" />
-      <entry key="S2" value="0.5950158481533379" />
-      <entry key="S5" value="0.8124776317624249" />
-      <entry key="S10" value="0.9013754111148327" />
-      <entry key="S30" value="0.9659978491119806" />
-      <entry key="S60" value="0.9869523005985364" />
-      <entry key="M2" value="1.0560863418045914" />
-      <entry key="M5" value="1.5156801861693616" />
-      <entry key="M10" value="4.366261354009071" />
-      <entry key="M15" value="13.314506818686947" />
-      <entry key="M30" value="70.96436660279277" />
-      <entry key="H1" value="224.3215388516745" />
-      <entry key="H2" value="462.6769927119757" />
-      <entry key="H4" value="697.473071756274" />
-      <entry key="D1" value="1008.5478072536167" />
-      <entry key="W1" value="1077.0592450346026" />
+      <entry key="MS100" value="0.23981602983131609" />
+      <entry key="MS500" value="0.7515807390327813" />
+      <entry key="S2" value="0.931094819830229" />
+      <entry key="S5" value="0.9718462521444694" />
+      <entry key="S10" value="0.9858226271213648" />
+      <entry key="S30" value="0.9952516983576207" />
+      <entry key="S60" value="0.9976230301485992" />
+      <entry key="M2" value="0.9990255695206972" />
+      <entry key="M5" value="1.1994882689500916" />
+      <entry key="M10" value="3.849930338451828" />
+      <entry key="M15" value="8.971068005388464" />
+      <entry key="M30" value="38.51879795572413" />
+      <entry key="H1" value="147.8573721082179" />
+      <entry key="H2" value="373.3014754254015" />
+      <entry key="H4" value="636.4905703678814" />
+      <entry key="D1" value="1028.9334051933886" />
+      <entry key="W1" value="1120.8074174440824" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{

@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { Alert, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import ErrorPopup from '../components/ErrorPopup';
 import LoadingPopup from '../components/LoadingPopup';
@@ -31,6 +31,17 @@ export default function ScreenOrganizer() {
     const { data: events, loading, error: loadError, refetch } = useFetch(getMyEvents);
     const { data: categories } = useFetch(getCategories);
     const [error, setError] = useState(null);
+
+    const firstFocus = useRef(true);
+    useFocusEffect(
+        useCallback(() => {
+            if (firstFocus.current) {
+                firstFocus.current = false;
+                return;
+            }
+            refetch();
+        }, [refetch])
+    );
 
     const categoryLabel = (name) => categories?.find((c) => c.name === name)?.label ?? name;
     const [deleting, setDeleting] = useState(false);
@@ -101,7 +112,8 @@ export default function ScreenOrganizer() {
                     <OrganizerEventCard
                         event={item}
                         categoryLabel={categoryLabel(item.category_name)}
-                        onEdit={() => setError(NOT_AVAILABLE("La modification d'un événement"))}
+                        onScan={() => navigation.navigate('ScanQr', { event: { id: item.id, name: item.name } })}
+                        onEdit={() => navigation.navigate('EditEvent', { event: item })}
                         onDelete={() => confirmDelete(item)}
                     />
                 )}
@@ -156,17 +168,16 @@ const styles = StyleSheet.create({
         height: 12,
     },
 
-    // En-tête
     header: {
         borderRadius: 24,
         padding: 18,
         gap: 6,
-        // Ombre iOS
+
         shadowColor: COLORS.navy,
         shadowOpacity: 0.25,
         shadowRadius: 12,
         shadowOffset: { width: 0, height: 6 },
-        // Ombre Android
+
         elevation: 8,
     },
     back: {
@@ -191,7 +202,6 @@ const styles = StyleSheet.create({
         lineHeight: 20,
     },
 
-    // Liste
     sectionHeader: {
         flexDirection: 'row',
         alignItems: 'center',

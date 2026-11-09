@@ -45,7 +45,6 @@ const ownerName = (ticket) =>
 function successResult(ticket, event) {
     const scannedEvent = ticket.ticket_type?.event;
     const details = [ticket.ticket_type?.name, ownerName(ticket)].filter(Boolean).join(' · ');
-    // L'API valide tout billet d'un événement de l'organisateur, pas seulement celui ouvert ici
     if (event && scannedEvent && scannedEvent.id !== event.id) {
         return {
             kind: 'warning',
@@ -75,7 +74,6 @@ export default function ScreenScanQr() {
     const [result, setResult] = useState(null);
     const [scannedCount, setScannedCount] = useState(0);
 
-    // Refs : onBarcodeScanned est appelé plusieurs fois par seconde, avant tout re-render
     const busyRef = useRef(false);
     const recentCodesRef = useRef(new Map());
     const resultTimerRef = useRef(null);
@@ -239,9 +237,7 @@ export default function ScreenScanQr() {
         </View>
     );
 }
-
 const VIEWFINDER_SIZE = 250;
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,

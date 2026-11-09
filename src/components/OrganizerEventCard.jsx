@@ -2,7 +2,7 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { COLORS } from '../constants/colors';
-import { formatShortDate } from '../utils/format';
+import { formatDateTime } from '../utils/formatDateTime';
 
 const STATUS_LABELS = {
     DRAFT: 'Brouillon',
@@ -36,7 +36,7 @@ export default function OrganizerEventCard({ event, categoryLabel, onScan, onEdi
                         )}
                     </View>
                     <Text style={styles.meta} numberOfLines={1}>
-                        {categoryLabel} · {formatShortDate(event.start_date)}
+                        {categoryLabel} · {formatDateTime(event.start_date, event.start_time)}
                     </Text>
                 </View>
             </View>
