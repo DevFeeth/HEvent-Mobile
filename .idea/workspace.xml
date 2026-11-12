@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b6bdfc93-7ebd-43e7-aeff-8812c03a45bf" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/EventStatusBanner.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/EventStatusBanner.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/validators/eventValidators.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/validators/eventValidators.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,61 +60,61 @@
 }</component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0002104906497533" />
-      <entry key="MS500" value="1.3202327255995467" />
-      <entry key="S2" value="4.9525256771709545" />
-      <entry key="S5" value="12.408080896692558" />
-      <entry key="S10" value="20.69815482885148" />
-      <entry key="S30" value="34.770194894383906" />
-      <entry key="S60" value="41.9734071053532" />
-      <entry key="M2" value="46.85389104006149" />
-      <entry key="M5" value="50.544621158378064" />
-      <entry key="M10" value="55.140102351481055" />
-      <entry key="M15" value="62.58758309692476" />
-      <entry key="M30" value="93.48681628785795" />
-      <entry key="H1" value="176.9302865012124" />
-      <entry key="H2" value="375.7402215141465" />
-      <entry key="H4" value="663.3723744324795" />
-      <entry key="D1" value="1178.8913344079588" />
-      <entry key="W1" value="1312.081600864345" />
+      <entry key="MS100" value="1.6691665602843466" />
+      <entry key="MS500" value="4.959128819804324" />
+      <entry key="S2" value="12.242097706949561" />
+      <entry key="S5" value="21.09191127734861" />
+      <entry key="S10" value="28.39970269208135" />
+      <entry key="S30" value="36.432589288389316" />
+      <entry key="S60" value="39.05703350590841" />
+      <entry key="M2" value="40.49947194767279" />
+      <entry key="M5" value="42.78608097536717" />
+      <entry key="M10" value="48.283140303856364" />
+      <entry key="M15" value="52.838233070552896" />
+      <entry key="M30" value="60.40035587226904" />
+      <entry key="H1" value="65.9141856225344" />
+      <entry key="H2" value="72.72535856548396" />
+      <entry key="H4" value="135.5557838235454" />
+      <entry key="D1" value="892.4946344600676" />
+      <entry key="W1" value="1352.9392156754907" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
       <entry key="MS500" value="0.0" />
       <entry key="S2" value="0.0" />
-      <entry key="S5" value="1.4961824756319961E-149" />
-      <entry key="S10" value="3.868051803727546E-75" />
-      <entry key="S30" value="1.5697509718653015E-25" />
-      <entry key="S60" value="3.9620082936123444E-13" />
-      <entry key="M2" value="6.294448580783949E-7" />
-      <entry key="M5" value="0.00330815653378551" />
-      <entry key="M10" value="0.057670497191103974" />
-      <entry key="M15" value="0.15213828877404725" />
-      <entry key="M30" value="0.48636262195572455" />
-      <entry key="H1" value="1.7398732729193975" />
-      <entry key="H2" value="5.607789904420078" />
-      <entry key="H4" value="11.468039237835086" />
-      <entry key="D1" value="21.87286325088031" />
-      <entry key="W1" value="24.525222645257088" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="7.919571035696447E-263" />
+      <entry key="M2" value="8.899197174857047E-132" />
+      <entry key="M5" value="3.799647487321998E-53" />
+      <entry key="M10" value="6.1806239921276755E-27" />
+      <entry key="M15" value="3.432608542603588E-18" />
+      <entry key="M30" value="2.310218551489482E-9" />
+      <entry key="H1" value="1.1991238879410124E-4" />
+      <entry key="H2" value="0.04655485233047632" />
+      <entry key="H4" value="1.0449025275439565" />
+      <entry key="D1" value="14.672475939180245" />
+      <entry key="W1" value="23.165475085779022" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.06381769772388358" />
-      <entry key="MS500" value="0.7931894246661183" />
-      <entry key="S2" value="4.692084306243081" />
-      <entry key="S5" value="12.27669822422061" />
-      <entry key="S10" value="20.624925471850585" />
-      <entry key="S30" value="34.742578223540896" />
-      <entry key="S60" value="41.958788603913305" />
-      <entry key="M2" value="46.846299272251265" />
-      <entry key="M5" value="50.54479731028183" />
-      <entry key="M10" value="55.19608238156269" />
-      <entry key="M15" value="62.73841004797808" />
-      <entry key="M30" value="93.97185156675789" />
-      <entry key="H1" value="178.66783889285358" />
-      <entry key="H2" value="381.3443406569751" />
-      <entry key="H4" value="674.8366365164477" />
-      <entry key="D1" value="1200.7629707696387" />
-      <entry key="W1" value="1336.6066259210472" />
+      <entry key="MS100" value="1.6067388973918442" />
+      <entry key="MS500" value="4.92342759674433" />
+      <entry key="S2" value="12.219214641295856" />
+      <entry key="S5" value="21.072391228290076" />
+      <entry key="S10" value="28.38407484822842" />
+      <entry key="S30" value="36.424871559698175" />
+      <entry key="S60" value="39.05273497715422" />
+      <entry key="M2" value="40.497196263344016" />
+      <entry key="M5" value="42.784968672545844" />
+      <entry key="M10" value="48.28225940867082" />
+      <entry key="M15" value="52.83746198652551" />
+      <entry key="M30" value="60.39981676515472" />
+      <entry key="H1" value="65.91397980589456" />
+      <entry key="H2" value="72.77170218913835" />
+      <entry key="H4" value="136.6002421983898" />
+      <entry key="D1" value="907.1662644332645" />
+      <entry key="W1" value="1376.1045004570412" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -124,26 +126,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "nolan",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/nolan/IdeaProjects/HEvent-Mobile/src/assets",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.jshint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.jshint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "C:\\Users\\nolan\\AppData\\Local\\Programs\\IntelliJ IDEA\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;nolan&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/nolan/IdeaProjects/HEvent-Mobile/src/assets&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\nolan\\AppData\\Local\\Programs\\IntelliJ IDEA\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\nolan\IdeaProjects\HEvent-Mobile\src\assets" />
@@ -154,6 +156,30 @@
       <recent name="C:\Users\nolan\IdeaProjects\HEvent-Mobile\src\components" />
       <recent name="C:\Users\nolan\IdeaProjects\HEvent-Mobile\src\components\Navbar" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="HEvent-Mobile" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="HEvent-Mobile" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="HEvent-Mobile" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="HEvent-Mobile" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>

@@ -9,7 +9,6 @@ export const EVENT_STATUSES = [
 
 export const EVENT_STATUS_VALUES = EVENT_STATUSES.map((s) => s.value);
 
-// Bandeau de statut affiché sur chaque événement
 export const EVENT_STATUS_BANNERS = {
     DRAFT: { label: 'Brouillon', icon: 'construct-outline', background: COLORS.draft, color: COLORS.white },
     PUBLISHED: { label: 'Actif', icon: 'checkmark-circle-outline', background: COLORS.success, color: COLORS.white },

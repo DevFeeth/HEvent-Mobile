@@ -11,7 +11,7 @@ export const COLORS = {
     error: '#ff4343',
     success: '#1fa463',
     warning: '#f5a623',
-    draft: '#8b5a2b', // brun mécanique
-    finished: '#d5d8de', // gris pâle
+    draft: '#8b5a2b',
+    finished: '#d5d8de',
     finishedText: '#5f6672',
 };
