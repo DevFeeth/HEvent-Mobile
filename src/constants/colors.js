@@ -8,5 +8,10 @@ export const COLORS = {
     text: '#031d3e',
     textMuted: '#b4b7bf',
     shadow: '#b4b7bf',
-    error: '#ff4343'
+    error: '#ff4343',
+    success: '#1fa463',
+    warning: '#f5a623',
+    draft: '#8b5a2b',
+    finished: '#d5d8de',
+    finishedText: '#5f6672',
 };
