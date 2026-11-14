@@ -12,47 +12,45 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
+import ConfirmPopup from '../components/ConfirmPopup';
 import ErrorPopup from '../components/ErrorPopup';
 import Field from '../components/Field';
 import LoadingPopup from '../components/LoadingPopup';
 import { COLORS } from '../constants/colors';
 import { useAuth } from '../context/AuthContext';
+import useUnsavedChangesGuard from '../hooks/useUnsavedChangesGuard';
 import { ApiError } from '../utils/ApiError';
+import { AUTH_LIMITS, PROFILE_RULES } from '../utils/validators/authValidators';
+import { validateForm } from '../utils/validators/common';
 
 const MESSAGES = {
     409: { title: 'E-mail déjà utilisé', message: 'Un autre compte utilise déjà cette adresse e-mail.' },
 };
 
-function validate(form) {
-    const errors = {};
-    if (!form.last_name.trim()) errors.last_name = 'Nom requis';
-    if (!form.first_name.trim()) errors.first_name = 'Prénom requis';
-    if (form.postal_code.trim() && !/^\d{4}$/.test(form.postal_code.trim())) {
-        errors.postal_code = '4 chiffres';
-    }
-    return errors;
-}
-
 export default function ScreenEditProfile() {
     const navigation = useNavigation();
     const { user, updateProfile } = useAuth();
 
-    const [form, setForm] = useState({
+    const [initial] = useState(() => ({
         last_name: user.last_name ?? '',
         first_name: user.first_name ?? '',
         email: user.email ?? '',
         address: user.address ?? '',
         postal_code: user.postal_code ? String(user.postal_code) : '',
         city: user.city ?? '',
-    });
+    }));
+    const [form, setForm] = useState(initial);
     const [fieldErrors, setFieldErrors] = useState({});
     const [error, setError] = useState(null);
     const [submitting, setSubmitting] = useState(false);
 
+    const hasChanges = Object.keys(initial).some((field) => form[field].trim() !== initial[field].trim());
+    const { leaveWithoutPrompt, popupProps: leavePopup } = useUnsavedChangesGuard(hasChanges);
+
     const update = (field) => (value) => setForm((f) => ({ ...f, [field]: value }));
 
     const submit = async () => {
-        const errors = validate(form);
+        const errors = validateForm(form, PROFILE_RULES);
         setFieldErrors(errors);
         setError(null);
         if (Object.keys(errors).length) return;
@@ -66,7 +64,7 @@ export default function ScreenEditProfile() {
                 postal_code: form.postal_code.trim(),
                 city: form.city.trim(),
             });
-            navigation.goBack();
+            leaveWithoutPrompt();
         } catch (err) {
             setError(err);
         } finally {
@@ -109,7 +107,7 @@ export default function ScreenEditProfile() {
                             onChangeText={update('last_name')}
                             error={fieldErrors.last_name}
                             autoComplete="family-name"
-                            maxLength={50}
+                            maxLength={AUTH_LIMITS.name}
                         />
                         <Field
                             label="Prénom"
@@ -119,7 +117,7 @@ export default function ScreenEditProfile() {
                             onChangeText={update('first_name')}
                             error={fieldErrors.first_name}
                             autoComplete="given-name"
-                            maxLength={50}
+                            maxLength={AUTH_LIMITS.name}
                         />
                         <Field
                             label="Adresse e-mail"
@@ -134,7 +132,7 @@ export default function ScreenEditProfile() {
                             value={form.address}
                             onChangeText={update('address')}
                             autoComplete="street-address"
-                            maxLength={100}
+                            maxLength={AUTH_LIMITS.address}
                         />
 
                         <View style={styles.twoCols}>
@@ -148,7 +146,7 @@ export default function ScreenEditProfile() {
                                     error={fieldErrors.postal_code}
                                     keyboardType="number-pad"
                                     autoComplete="postal-code"
-                                    maxLength={4}
+                                    maxLength={AUTH_LIMITS.postalCode}
                                 />
                             </View>
                             <View style={styles.col}>
@@ -158,7 +156,7 @@ export default function ScreenEditProfile() {
                                     placeholder="Ville"
                                     value={form.city}
                                     onChangeText={update('city')}
-                                    maxLength={60}
+                                    maxLength={AUTH_LIMITS.city}
                                 />
                             </View>
                         </View>
@@ -191,6 +189,16 @@ export default function ScreenEditProfile() {
                 onClose={() => setError(null)}
                 onRetry={error instanceof ApiError ? submit : undefined}
                 messages={MESSAGES}
+            />
+
+            <ConfirmPopup
+                {...leavePopup}
+                title="Annuler les modifications ?"
+                message="Les changements apportés à votre compte ne seront pas enregistrés."
+                confirmLabel="Quitter sans enregistrer"
+                cancelLabel="Continuer la modification"
+                icon="create-outline"
+                destructive
             />
         </SafeAreaView>
     );

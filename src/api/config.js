@@ -12,3 +12,5 @@ function getDevHost() {
 }
 
 export const API_URL = `http://${API_HOST || getDevHost()}:${API_PORT}${API_PATH}`;
+
+export const GOOGLE_MAPS_API_KEY = process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY;
