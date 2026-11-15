@@ -11,6 +11,7 @@ import { getEventById } from '../services/eventService';
 import { formatDistance } from '../utils/distance';
 import { eventCoords } from '../utils/eventCoords';
 import { formatLongDate } from '../utils/formatDateTime';
+import { getTicketTypes } from '../services/eventService';
 
 const MAX_PER_TYPE = 10;
 
@@ -32,8 +33,8 @@ export default function ScreenEventDetail() {
     const insets = useSafeAreaInsets();
     const { event, categoryLabel, distance } = useRoute().params;
 
-    const { data: details } = useFetch(() => getEventById(event.id), [event.id]);
-    const ticketTypes = details?.ticket_type ?? details?.ticket_types ?? event.ticket_type ?? [];
+    const { data: ticketData } = useFetch(() => getTicketTypes(event.id), [event.id]);
+    const ticketTypes = useMemo(() => ticketData ?? [], [ticketData]);
 
     const [quantities, setQuantities] = useState({});
 
