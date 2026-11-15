@@ -7,6 +7,7 @@ import ScreenHome from '../screens/ScreenHome';
 import ScreenEvents from '../screens/ScreenEvents';
 import ScreenTickets from '../screens/ScreenTickets';
 import ProfileStack from './ProfileStack';
+import EventsStack from './EventsStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -48,7 +49,7 @@ export default function BottomTabs() {
             })}
         >
             <Tab.Screen name="Home" component={ScreenHome} />
-            <Tab.Screen name="Events" component={ScreenEvents} />
+            <Tab.Screen name="Events" component={EventsStack} />
             <Tab.Screen name="Tickets" component={ScreenTickets} />
             <Tab.Screen name="Profile" component={ProfileStack} />
         </Tab.Navigator>

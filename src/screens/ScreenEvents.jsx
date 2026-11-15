@@ -22,6 +22,7 @@ import { getCategories } from '../services/categoryService';
 import { getDrivingDistances } from '../services/distanceService';
 import { getEvents } from '../services/eventService';
 import { eventCoords } from '../utils/eventCoords';
+import { useNavigation } from '@react-navigation/native';
 
 const DATE_OPTIONS = [
     { value: 'ALL', label: 'Toutes les dates', short: 'Toutes' },
@@ -67,6 +68,7 @@ async function distancesFor(origin, events) {
 
 export default function ScreenEvents() {
     const userLocation = useUserLocation();
+    const navigation = useNavigation();
 
     const [search, setSearch] = useState('');
     const [category, setCategory] = useState('ALL');
@@ -200,6 +202,13 @@ export default function ScreenEvents() {
                             categoryLabel={labels[item.category_name] ?? item.category_name}
                             userLocation={userLocation}
                             distance={distances?.[item.id] ?? null}
+                            onPress={() =>
+                                navigation.navigate('EventDetail', {
+                                    event: item,
+                                    categoryLabel: labels[item.category_name] ?? item.category_name,
+                                    distance: distances?.[item.id] ?? null,
+                                })
+                            }
                         />
                     )}
                     ListEmptyComponent={

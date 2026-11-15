@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 
@@ -15,7 +15,7 @@ function formatAddress(place) {
     return [street, place.city].filter(Boolean).join(', ') || null;
 }
 
-export default function UpcomingEventCard({ event, categoryLabel, userLocation, distance }) {
+export default function UpcomingEventCard({ event, categoryLabel, userLocation, distance, onPress }) {
     const coords = eventCoords(event);
     const canLocate = !!coords && !!userLocation;
 
@@ -26,7 +26,7 @@ export default function UpcomingEventCard({ event, categoryLabel, userLocation, 
     const place = formatAddress(places?.[0]);
 
     return (
-        <View style={styles.card}>
+        <Pressable onPress={onPress} style={({ pressed }) => [styles.card, pressed && styles.pressed]}>
             {event.image_url ? (
                 <Image source={{ uri: event.image_url }} style={styles.image} />
             ) : (
@@ -55,7 +55,7 @@ export default function UpcomingEventCard({ event, categoryLabel, userLocation, 
                     </View>
                 )}
             </View>
-        </View>
+        </Pressable>
     );
 }
 

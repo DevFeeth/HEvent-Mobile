@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import ErrorPopup from '../components/ErrorPopup';
 import LoadingPopup from '../components/LoadingPopup';
@@ -18,6 +18,7 @@ import { eventCoords } from '../utils/eventCoords';
 
 export default function ScreenHome() {
     const { user } = useAuth();
+    const navigation = useNavigation();
     const { data: events, loading, error, refetch } = useFetch(getUpcomingEvents);
     const { data: categories } = useFetch(getCategories);
     const userLocation = useUserLocation();
@@ -85,6 +86,17 @@ export default function ScreenHome() {
                             categoryLabel={categoryLabel(event.category_name)}
                             userLocation={userLocation}
                             distance={distanceOf(event)}
+                            onPress={() =>
+                                navigation.navigate('Events', {
+                                    screen: 'EventDetail',
+                                    initial: false,
+                                    params: {
+                                        event,
+                                        categoryLabel: categoryLabel(event.category_name),
+                                        distance: distanceOf(event) ?? null,
+                                    },
+                                })
+                            }
                         />
                     ))}
                 </View>
