@@ -11,3 +11,5 @@ export const createEvent = (event) => api.post('/events', event);
 export const updateEvent = (id, changes) => api.patch(`/events/${id}`, changes);
 
 export const deleteEvent = (id) => api.delete(`/events/${id}`);
+
+export const getTicketTypes = (eventId) => api.get(`/events/${eventId}/ticket-types`);
