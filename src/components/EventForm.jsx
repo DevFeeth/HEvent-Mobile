@@ -13,8 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Field from './Field';
 import { COLORS } from '../constants/colors';
 import { CREATE_EVENT_STATUSES, EVENT_STATUSES } from '../constants/eventStatus';
-import useFetch from '../hooks/useFetch';
-import { getCategories } from '../services/categoryService';
+import useCategories from '../hooks/useCategories';
 import { maskDateInput, maskTimeInput } from '../utils/formatDateTime';
 import { EVENT_LIMITS } from '../utils/validators/eventValidators';
 
@@ -23,6 +22,7 @@ export default function EventForm({
     form,
     update,
     errors,
+    touch,
     title,
     subtitle,
     banner,
@@ -33,7 +33,7 @@ export default function EventForm({
     onSubmit,
     onCancel,
 }) {
-    const { data: categories } = useFetch(getCategories);
+    const { categories } = useCategories();
     const statuses = mode === 'create' ? CREATE_EVENT_STATUSES : EVENT_STATUSES;
 
     const imageUrl = form.image_url.trim();
@@ -70,6 +70,7 @@ export default function EventForm({
                         value={form.name}
                         onChangeText={update('name')}
                         error={errors.name}
+                        onBlur={touch('name')}
                         maxLength={EVENT_LIMITS.eventName}
                     />
                     <Field
@@ -79,6 +80,7 @@ export default function EventForm({
                         value={form.description}
                         onChangeText={update('description')}
                         error={errors.description}
+                        onBlur={touch('description')}
                         maxLength={EVENT_LIMITS.description}
                         multiline
                     />
@@ -124,6 +126,8 @@ export default function EventForm({
                         onChangeTime={update('start_time', maskTimeInput)}
                         dateError={errors.start_date}
                         timeError={errors.start_time}
+                        onBlurDate={touch('start_date')}
+                        onBlurTime={touch('start_time')}
                     />
                     <DateTimeRow
                         dateLabel="Date de fin"
@@ -133,6 +137,8 @@ export default function EventForm({
                         onChangeTime={update('end_time', maskTimeInput)}
                         dateError={errors.end_date}
                         timeError={errors.end_time}
+                        onBlurDate={touch('end_date')}
+                        onBlurTime={touch('end_time')}
                     />
                 </View>
 
@@ -146,6 +152,7 @@ export default function EventForm({
                         value={form.image_url}
                         onChangeText={update('image_url')}
                         error={errors.image_url}
+                        onBlur={touch('image_url')}
                         autoCapitalize="none"
                         autoCorrect={false}
                         keyboardType="url"
@@ -173,7 +180,7 @@ export default function EventForm({
     );
 }
 
-function DateTimeRow({ dateLabel, date, time, onChangeDate, onChangeTime, dateError, timeError }) {
+function DateTimeRow({ dateLabel, date, time, onChangeDate, onChangeTime, onBlurDate, onBlurTime, dateError, timeError }) {
     return (
         <View style={styles.twoCols}>
             <View style={styles.col}>
@@ -184,6 +191,7 @@ function DateTimeRow({ dateLabel, date, time, onChangeDate, onChangeTime, dateEr
                     value={date}
                     onChangeText={onChangeDate}
                     error={dateError}
+                    onBlur={onBlurDate}
                     keyboardType="number-pad"
                     maxLength={10}
                 />
@@ -196,6 +204,7 @@ function DateTimeRow({ dateLabel, date, time, onChangeDate, onChangeTime, dateEr
                     value={time}
                     onChangeText={onChangeTime}
                     error={timeError}
+                    onBlur={onBlurTime}
                     keyboardType="number-pad"
                     maxLength={5}
                 />

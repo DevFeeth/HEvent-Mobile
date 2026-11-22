@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 
 import ConfirmPopup from './ConfirmPopup';
 import ErrorPopup from './ErrorPopup';
 import TicketTypeSheet from './TicketTypeSheet';
 import { COLORS } from '../constants/colors';
-import useFetch from '../hooks/useFetch';
-import { getEventTickets } from '../services/ticketService';
+import useStoreLoader from '../hooks/useStoreLoader';
 import { deleteTicketType, getTicketTypesByEvent } from '../services/ticketTypeService';
+import { selectTicketTypes, setTicketTypes } from '../store/ticketsSlice';
 import { formatPrice } from '../utils/formatPrice';
 
 const MESSAGES = {
@@ -18,26 +19,24 @@ const MESSAGES = {
     },
 };
 
-// available_quantity = nombre total de billets du type (fixe).
-// Les vendus se calculent à partir des billets de l'événement (hors annulés), par type.
-const countSoldByType = (tickets) =>
-    tickets
-        .filter((t) => t.status !== 'CANCELLED')
-        .reduce((acc, t) => ({ ...acc, [t.ticket_type_id]: (acc[t.ticket_type_id] ?? 0) + 1 }), {});
 const plural = (n, word) => `${n} ${word}${n > 1 ? 's' : ''}`;
 
 export default function TicketTypeSection({ event }) {
-    const types = useFetch(() => getTicketTypesByEvent(event.id), [event.id]);
-    const sold = useFetch(() => getEventTickets(event.id).then(countSoldByType), [event.id]);
+    const ticketTypes = useSelector(selectTicketTypes(event.id));
+    const types = useStoreLoader(
+        (signal) => getTicketTypesByEvent(event.id, signal),
+        (data) => setTicketTypes({ eventId: event.id, ticketTypes: data }),
+        [event.id]
+    );
 
     const [sheet, setSheet] = useState({ visible: false, ticketType: null });
     const [busyId, setBusyId] = useState(null);
     const [error, setError] = useState(null);
 
-    const list = types.data ?? [];
-    const soldByType = sold.data ?? {};
-    const ready = types.data != null && sold.data != null;
-    const soldOf = (ticketType) => soldByType[ticketType.id] ?? 0;
+    const list = ticketTypes ?? [];
+    const ready = ticketTypes != null;
+    // available_quantity : total du type ; remaining_quantity : encore en vente (calculé par l'API)
+    const soldOf = (ticketType) => ticketType.available_quantity - ticketType.remaining_quantity;
     const total = list.reduce((sum, t) => sum + Number(t.available_quantity), 0);
     const soldTotal = list.reduce((sum, t) => sum + soldOf(t), 0);
 
@@ -66,11 +65,8 @@ export default function TicketTypeSection({ event }) {
         }
     };
 
-    const loadError = types.error ?? sold.error;
-    const retryLoad = () => {
-        types.refetch();
-        sold.refetch();
-    };
+    const loadError = types.error;
+    const retryLoad = types.refetch;
 
     return (
         <View style={styles.card}>

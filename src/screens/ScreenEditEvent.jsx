@@ -10,7 +10,7 @@ import EventForm from '../components/EventForm';
 import LoadingPopup from '../components/LoadingPopup';
 import TicketTypeSection from '../components/TicketTypeSection';
 import { COLORS } from '../constants/colors';
-import useEventForm, { toEventError } from '../hooks/useEventForm';
+import useEventForm from '../hooks/useEventForm';
 import useUnsavedChangesGuard from '../hooks/useUnsavedChangesGuard';
 import { updateEvent } from '../services/eventService';
 import { ApiError } from '../utils/ApiError';
@@ -40,7 +40,7 @@ export default function ScreenEditEvent() {
             await updateEvent(event.id, eventForm.toChanges());
             leaveWithoutPrompt();
         } catch (err) {
-            setError(toEventError(err));
+            setError(err);
         } finally {
             setSubmitting(false);
         }

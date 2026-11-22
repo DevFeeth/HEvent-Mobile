@@ -4,16 +4,18 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ConfirmPopup from '../components/ConfirmPopup';
 import ErrorPopup from '../components/ErrorPopup';
 import LoadingPopup from '../components/LoadingPopup';
 import OrganizerEventCard from '../components/OrganizerEventCard';
 import { COLORS } from '../constants/colors';
-import useFetch from '../hooks/useFetch';
-import { getCategories } from '../services/categoryService';
+import useCategories from '../hooks/useCategories';
+import useStoreLoader from '../hooks/useStoreLoader';
 import { deleteEvent } from '../services/eventService';
 import { getMyEvents } from '../services/userService';
+import { eventRemoved, selectMyEvents, setMyEvents } from '../store/eventsSlice';
 
 const DELETE_MESSAGES = {
     409: {
@@ -24,8 +26,10 @@ const DELETE_MESSAGES = {
 
 export default function ScreenOrganizer() {
     const navigation = useNavigation();
-    const { data: events, loading, error: loadError, refetch } = useFetch(getMyEvents);
-    const { data: categories } = useFetch(getCategories);
+    const dispatch = useDispatch();
+    const events = useSelector(selectMyEvents);
+    const { loading, error: loadError, refetch } = useStoreLoader(getMyEvents, setMyEvents);
+    const { categoryLabel } = useCategories();
     const [error, setError] = useState(null);
 
     const firstFocus = useRef(true);
@@ -39,7 +43,6 @@ export default function ScreenOrganizer() {
         }, [refetch])
     );
 
-    const categoryLabel = (name) => categories?.find((c) => c.name === name)?.label ?? name;
     const [deleting, setDeleting] = useState(false);
     const [toDelete, setToDelete] = useState(null);
 
@@ -49,7 +52,8 @@ export default function ScreenOrganizer() {
         setDeleting(true);
         try {
             await deleteEvent(event.id);
-            await refetch();
+            // Retiré du store : la liste se met à jour sans recharger
+            dispatch(eventRemoved(event.id));
         } catch (err) {
             setError(err);
         } finally {
