@@ -4,16 +4,17 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 import ConfirmPopup from '../components/ConfirmPopup';
 import ErrorPopup from '../components/ErrorPopup';
 import Field from '../components/Field';
 import LoadingPopup from '../components/LoadingPopup';
 import { COLORS } from '../constants/colors';
-import { useAuth } from '../context/AuthContext';
 import useFetch from '../hooks/useFetch';
 import { createOrder } from '../services/orderService';
 import { getTicketTypesByEvent } from '../services/ticketTypeService';
+import { selectUser } from '../store/authSlice';
 import { ApiError } from '../utils/ApiError';
 import { formatDistance } from '../utils/distance';
 import { eventCoords } from '../utils/eventCoords';
@@ -58,7 +59,7 @@ export default function ScreenEventDetail() {
     const insets = useSafeAreaInsets();
     const { event, categoryLabel, distance } = useRoute().params;
 
-    const { user } = useAuth();
+    const user = useSelector(selectUser);
     const { data: ticketData, refetch } = useFetch(() => getTicketTypesByEvent(event.id), [event.id]);
     const ticketTypes = useMemo(() => ticketData ?? [], [ticketData]);
 

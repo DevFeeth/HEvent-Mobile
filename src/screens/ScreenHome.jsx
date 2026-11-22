@@ -3,21 +3,22 @@ import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 import ErrorPopup from '../components/ErrorPopup';
 import LoadingPopup from '../components/LoadingPopup';
 import UpcomingEventCard from '../components/UpcomingEventCard';
 import { COLORS } from '../constants/colors';
-import { useAuth } from '../context/AuthContext';
 import useFetch from '../hooks/useFetch';
 import useUserLocation from '../hooks/useUserLocation';
 import { getCategories } from '../services/categoryService';
 import { getDrivingDistances } from '../services/distanceService';
 import { getUpcomingEvents } from '../services/eventService';
+import { selectUser } from '../store/authSlice';
 import { eventCoords } from '../utils/eventCoords';
 
 export default function ScreenHome() {
-    const { user } = useAuth();
+    const user = useSelector(selectUser);
     const navigation = useNavigation();
     const { data: events, loading, error, refetch } = useFetch(getUpcomingEvents);
     const { data: categories } = useFetch(getCategories);

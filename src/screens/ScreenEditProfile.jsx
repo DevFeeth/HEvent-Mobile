@@ -11,14 +11,16 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 import ConfirmPopup from '../components/ConfirmPopup';
 import ErrorPopup from '../components/ErrorPopup';
 import Field from '../components/Field';
 import LoadingPopup from '../components/LoadingPopup';
 import { COLORS } from '../constants/colors';
-import { useAuth } from '../context/AuthContext';
+import useAuth from '../hooks/useAuth';
 import useUnsavedChangesGuard from '../hooks/useUnsavedChangesGuard';
+import { selectUser } from '../store/authSlice';
 import { ApiError } from '../utils/ApiError';
 import { AUTH_LIMITS, PROFILE_RULES } from '../utils/validators/authValidators';
 import { validateForm } from '../utils/validators/common';
@@ -29,7 +31,8 @@ const MESSAGES = {
 
 export default function ScreenEditProfile() {
     const navigation = useNavigation();
-    const { user, updateProfile } = useAuth();
+    const user = useSelector(selectUser);
+    const { updateProfile } = useAuth();
 
     const [initial] = useState(() => ({
         last_name: user.last_name ?? '',

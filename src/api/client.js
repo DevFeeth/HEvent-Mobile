@@ -10,7 +10,7 @@ export function setAuthToken(token) {
     authToken = token;
 }
 
-// Appelé quand l'API refuse le token (expiré, compte désactivé...) : AuthContext déconnecte l'utilisateur
+// Appelé quand l'API refuse le token (expiré, compte désactivé...) : useSessionRestore déconnecte l'utilisateur
 export function setUnauthorizedHandler(handler) {
     onUnauthorized = handler;
 }

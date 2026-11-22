@@ -3,16 +3,17 @@ import { FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from 'rea
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 import ErrorPopup from '../components/ErrorPopup';
 import LoadingPopup from '../components/LoadingPopup';
 import MyTicketCard from '../components/MyTicketCard';
 import TicketQrModal from '../components/TicketQrModal';
 import { COLORS } from '../constants/colors';
-import { useAuth } from '../context/AuthContext';
 import useFetch from '../hooks/useFetch';
 import { getCategories } from '../services/categoryService';
 import { getMyTickets } from '../services/userService';
+import { selectUser } from '../store/authSlice';
 
 const TABS = [
     { key: 'active', label: 'Mes billets', section: 'Billets actifs' },
@@ -37,7 +38,7 @@ function historyBadge(ticket, today) {
 }
 
 export default function ScreenTickets() {
-    const { user } = useAuth();
+    const user = useSelector(selectUser);
     return (
         <SafeAreaView style={styles.container} edges={['top']}>
             {user ? <MyTickets userId={user.id} /> : <LoggedOut />}

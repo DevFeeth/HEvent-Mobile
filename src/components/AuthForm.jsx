@@ -15,7 +15,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import ErrorPopup from './ErrorPopup';
 import LoadingPopup from './LoadingPopup';
 import { COLORS } from '../constants/colors';
-import { useAuth } from '../context/AuthContext';
+import useAuth from '../hooks/useAuth';
 import { ApiError } from '../utils/ApiError';
 import { AUTH_LIMITS, LOGIN_RULES, REGISTER_RULES } from '../utils/validators/authValidators';
 import { validateForm } from '../utils/validators/common';
