@@ -4,7 +4,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TabBarIcon from '../components/TabBarIcon';
 import { COLORS } from '../constants/colors';
 import ScreenHome from '../screens/ScreenHome';
-import ScreenEvents from '../screens/ScreenEvents';
 import ScreenTickets from '../screens/ScreenTickets';
 import ProfileStack from './ProfileStack';
 import EventsStack from './EventsStack';

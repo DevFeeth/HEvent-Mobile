@@ -1,7 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import { setAuthToken } from '../api/client';
+import { setAuthToken, setUnauthorizedHandler } from '../api/client';
 import * as userService from '../services/userService';
 
 const TOKEN_KEY = 'hevent_token';
@@ -17,6 +17,11 @@ export function AuthProvider({ children }) {
         setUser(null);
         await SecureStore.deleteItemAsync(TOKEN_KEY);
     }, []);
+
+    useEffect(() => {
+        setUnauthorizedHandler(logout);
+        return () => setUnauthorizedHandler(null);
+    }, [logout]);
 
     useEffect(() => {
         SecureStore.getItemAsync(TOKEN_KEY)

@@ -4,9 +4,15 @@ import { API_URL } from './config';
 const TIMEOUT_MS = 10000;
 
 let authToken = null;
+let onUnauthorized = null;
 
 export function setAuthToken(token) {
     authToken = token;
+}
+
+// Appelé quand l'API refuse le token (expiré, compte désactivé...) : AuthContext déconnecte l'utilisateur
+export function setUnauthorizedHandler(handler) {
+    onUnauthorized = handler;
 }
 
 function buildQuery(params) {
@@ -25,7 +31,8 @@ function buildQuery(params) {
 async function request(method, path, { body, params } = {}) {
     const headers = { Accept: 'application/json' };
     if (body !== undefined) headers['Content-Type'] = 'application/json';
-    if (authToken) headers.Authorization = `Bearer ${authToken}`;
+    const sentToken = authToken;
+    if (sentToken) headers.Authorization = `Bearer ${sentToken}`;
 
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
@@ -52,6 +59,10 @@ async function request(method, path, { body, params } = {}) {
     } catch {
         // On garde la data brut
     }
+
+    // Sans token envoyé (ex. mauvais mot de passe au login), un 401 ne veut pas dire « session expirée ».
+    // Si le token a changé entre-temps (reconnexion), on ne déconnecte pas la nouvelle session.
+    if (response.status === 401 && sentToken && sentToken === authToken) onUnauthorized?.();
 
     if (!response.ok) {
         const fields = Array.isArray(data) ? data : [];
