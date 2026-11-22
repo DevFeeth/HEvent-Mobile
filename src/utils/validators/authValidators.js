@@ -1,3 +1,4 @@
+import { COMMON_PASSWORDS } from '../../constants/commonPasswords';
 import { clean, maxLength, required } from './common';
 
 const NAME_REGEX = /^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:[ '-][A-Za-zÀ-ÖØ-öø-ÿ]+)*$/;
@@ -37,11 +38,25 @@ export function validateLoginPassword(value) {
     return value ? null : 'Mot de passe requis';
 }
 
-export function validateNewPassword(value) {
+// Mots propres au contexte (nom de l'app, e-mail, prénom, nom) que le mot de passe ne doit pas contenir.
+// Moins de 3 lettres : trop court pour être significatif (ex. « Al »).
+const contextWords = (form) =>
+    ['hevent', clean(form.email).split('@')[0], clean(form.first_name), clean(form.last_name)]
+        .map((word) => word.toLowerCase())
+        .filter((word) => word.length >= 3);
+
+// Norme NIST SP 800-63B : longueur minimale, pas de règle de composition imposée,
+// mais refus des mots de passe courants ou liés au contexte
+export function validateNewPassword(value, form = {}) {
     const v = value ?? '';
     if (!v) return 'Mot de passe requis';
     if (v.length < AUTH_LIMITS.passwordMin) return `${AUTH_LIMITS.passwordMin} caractères minimum`;
     if (v.length > AUTH_LIMITS.passwordMax) return `${AUTH_LIMITS.passwordMax} caractères maximum`;
+    const lower = v.toLowerCase();
+    if (COMMON_PASSWORDS.has(lower)) return 'Mot de passe trop courant, choisissez-en un autre';
+    if (contextWords(form).some((word) => lower.includes(word))) {
+        return 'Ne doit pas contenir votre nom, votre e-mail ou « HEvent »';
+    }
     return null;
 }
 
