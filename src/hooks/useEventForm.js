@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 
+import useFormErrors from './useFormErrors';
 import { ApiError } from '../utils/ApiError';
 import { dateInputToApi, isoToDateInput, isoToTimeInput } from '../utils/formatDateTime';
 import { validateEventForm } from '../utils/validators/eventValidators';
@@ -44,7 +45,6 @@ export const toEventError = (err) => (err instanceof ApiError && REFUSALS[err.me
 export default function useEventForm(event) {
     const initial = useMemo(() => toForm(event), [event]);
     const [form, setForm] = useState(initial);
-    const [errors, setErrors] = useState({});
 
     const update = (field, mask) => (value) =>
         setForm((f) => ({ ...f, [field]: mask ? mask(value) : value }));
@@ -55,11 +55,9 @@ export default function useEventForm(event) {
             .map((field) => [field, true])
     );
 
-    const validate = () => {
-        const next = validateEventForm(form, { changed: event ? changed : TO_API, initial });
-        setErrors(next);
-        return Object.keys(next).length === 0;
-    };
+    const { errors, touch, validateAll: validate } = useFormErrors(
+        validateEventForm(form, { changed: event ? changed : TO_API, initial })
+    );
 
     const toChanges = () =>
         Object.fromEntries(Object.keys(changed).map((field) => [field, TO_API[field](form[field])]));
@@ -75,6 +73,7 @@ export default function useEventForm(event) {
         form,
         update,
         errors,
+        touch,
         changed,
         hasChanges: Object.keys(changed).length > 0,
         validate,

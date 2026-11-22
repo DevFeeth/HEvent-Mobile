@@ -16,6 +16,7 @@ import ErrorPopup from './ErrorPopup';
 import LoadingPopup from './LoadingPopup';
 import { COLORS } from '../constants/colors';
 import useAuth from '../hooks/useAuth';
+import useFormErrors from '../hooks/useFormErrors';
 import { ApiError } from '../utils/ApiError';
 import { AUTH_LIMITS, LOGIN_RULES, REGISTER_RULES } from '../utils/validators/authValidators';
 import { validateForm } from '../utils/validators/common';
@@ -33,18 +34,23 @@ export default function AuthForm() {
     const { login, register } = useAuth();
     const [mode, setMode] = useState('login');
     const [form, setForm] = useState(EMPTY_FORM);
-    const [fieldErrors, setFieldErrors] = useState({});
     const [error, setError] = useState(null);
     const [submitting, setSubmitting] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
     const isRegister = mode === 'register';
+    const {
+        errors: fieldErrors,
+        touch,
+        validateAll,
+        reset,
+    } = useFormErrors(validateForm(form, isRegister ? REGISTER_RULES : LOGIN_RULES));
 
     const update = (field) => (value) => setForm((f) => ({ ...f, [field]: value }));
 
     const switchMode = () => {
         setMode(isRegister ? 'login' : 'register');
-        setFieldErrors({});
+        reset();
         setError(null);
     };
 
@@ -55,10 +61,8 @@ export default function AuthForm() {
         });
 
     const submit = async () => {
-        const errors = validateForm(form, isRegister ? REGISTER_RULES : LOGIN_RULES);
-        setFieldErrors(errors);
         setError(null);
-        if (Object.keys(errors).length) return;
+        if (!validateAll()) return;
 
         setSubmitting(true);
         try {
@@ -121,6 +125,7 @@ export default function AuthForm() {
                                 value={form.first_name}
                                 onChangeText={update('first_name')}
                                 error={fieldErrors.first_name}
+                                onBlur={touch('first_name')}
                                 autoComplete="given-name"
                                 maxLength={AUTH_LIMITS.name}
                             />
@@ -131,6 +136,7 @@ export default function AuthForm() {
                                 value={form.last_name}
                                 onChangeText={update('last_name')}
                                 error={fieldErrors.last_name}
+                                onBlur={touch('last_name')}
                                 autoComplete="family-name"
                                 maxLength={AUTH_LIMITS.name}
                             />
@@ -144,6 +150,7 @@ export default function AuthForm() {
                         value={form.email}
                         onChangeText={update('email')}
                         error={fieldErrors.email}
+                        onBlur={touch('email')}
                         autoCapitalize="none"
                         autoComplete="email"
                         keyboardType="email-address"
@@ -157,6 +164,7 @@ export default function AuthForm() {
                         value={form.password}
                         onChangeText={update('password')}
                         error={fieldErrors.password}
+                        onBlur={touch('password')}
                         autoCapitalize="none"
                         autoComplete={isRegister ? 'new-password' : 'current-password'}
                         secureTextEntry={!showPassword}
