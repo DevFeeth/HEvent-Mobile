@@ -7,9 +7,9 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import ConfirmPopup from '../components/ConfirmPopup';
 import ErrorPopup from '../components/ErrorPopup';
 import LoadingPopup from '../components/LoadingPopup';
+import { API_MESSAGES } from '../constants/apiMessages';
 import { COLORS } from '../constants/colors';
 import { cancelOrder, payOrder } from '../services/orderService';
-import { ApiError } from '../utils/ApiError';
 import { formatPrice } from '../utils/formatPrice';
 
 // Même durée que dans l'API (ORDER_LIFETIME_IN_MS)
@@ -21,28 +21,8 @@ const PAYMENT_METHODS = [
     { value: 'pm_card_chargeDeclined', label: 'Visa •••• 0002', hint: 'Carte de test refusée' },
 ];
 
-const EXPIRED = {
-    title: 'Commande expirée',
-    message: 'Le délai de 15 minutes est dépassé, vos billets ont été remis en vente.',
-};
-
-const REFUSALS = {
-    'The payment was declined, the order is still pending': {
-        title: 'Paiement refusé',
-        message: 'Votre carte a été refusée. Vos billets restent réservés, vous pouvez réessayer.',
-    },
-    'This order has expired': EXPIRED,
-    'Only a pending order can be paid': {
-        title: 'Paiement impossible',
-        message: 'Cette commande n’est plus en attente de paiement.',
-    },
-    'This event is not open for sale': {
-        title: 'Vente fermée',
-        message: 'Cet événement n’est plus en vente.',
-    },
-};
-
-const toPayError = (err) => (err instanceof ApiError && REFUSALS[err.message]) || err;
+// Délai dépassé côté app : même message que le refus de l'API
+const EXPIRED = API_MESSAGES['This order has expired'];
 
 const formatCountdown = (ms) => {
     const seconds = Math.max(0, Math.ceil(ms / 1000));
@@ -114,7 +94,7 @@ export default function ScreenCheckout() {
             leave();
             navigation.navigate('Tickets');
         } catch (err) {
-            setError(toPayError(err));
+            setError(err);
         } finally {
             setBusy(null);
         }

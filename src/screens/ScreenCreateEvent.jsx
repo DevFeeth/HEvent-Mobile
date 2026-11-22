@@ -9,7 +9,7 @@ import ErrorPopup from '../components/ErrorPopup';
 import EventForm, { EventFormCard } from '../components/EventForm';
 import LoadingPopup from '../components/LoadingPopup';
 import { COLORS } from '../constants/colors';
-import useEventForm, { toEventError } from '../hooks/useEventForm';
+import useEventForm from '../hooks/useEventForm';
 import useUnsavedChangesGuard from '../hooks/useUnsavedChangesGuard';
 import { createEvent, getEventById } from '../services/eventService';
 import { ApiError } from '../utils/ApiError';
@@ -36,7 +36,7 @@ export default function ScreenCreateEvent() {
                 leaveWithoutPrompt();
                 return;
             }
-            setError(toEventError(err));
+            setError(err);
         } finally {
             setSubmitting(false);
         }

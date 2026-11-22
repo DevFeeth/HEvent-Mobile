@@ -10,17 +10,13 @@ import { formatLongDate, formatTimeRange } from '../utils/formatDateTime';
 
 const REFRESH_MS = 15000;
 
-const REFUSALS = {
-    'This ticket has already been used': 'Ce billet a déjà été utilisé.',
-    'This ticket has been cancelled': 'Ce billet a été annulé.',
-    'The order of this ticket is not paid': 'La commande de ce billet n’est pas encore payée.',
-    'This event is not open for entry': 'L’événement n’est pas ouvert à l’entrée.',
-    'This event has not started yet': 'Le QR code sera disponible le jour de l’événement.',
-    'This event is over': 'L’événement est terminé.',
-};
+// Côté participant, « pas encore commencé » s'explique autrement qu'à l'entrée
+const NOT_STARTED = 'This event has not started yet';
 
 const errorMessage = (err) =>
-    (err instanceof ApiError && REFUSALS[err.message]) || getErrorContent(err).message;
+    err instanceof ApiError && err.message === NOT_STARTED
+        ? 'Le QR code sera disponible le jour de l’événement.'
+        : getErrorContent(err).message;
 
 export default function TicketQrModal({ ticket, onClose }) {
     return (

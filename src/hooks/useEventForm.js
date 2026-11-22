@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 
 import useFormErrors from './useFormErrors';
-import { ApiError } from '../utils/ApiError';
 import { dateInputToApi, isoToDateInput, isoToTimeInput } from '../utils/formatDateTime';
 import { validateEventForm } from '../utils/validators/eventValidators';
 
@@ -28,19 +27,6 @@ const TO_API = {
     end_date: dateInputToApi,
     end_time: (v) => v,
 };
-
-const REFUSALS = {
-    'An event with tickets sold cannot go back to draft': {
-        title: 'Brouillon impossible',
-        message: 'Des billets ont déjà été vendus, l’événement ne peut pas repasser en brouillon.',
-    },
-    'The dates of an event cannot be in the past': {
-        title: 'Dates invalides',
-        message: 'Les dates de l’événement ne peuvent pas être dans le passé.',
-    },
-};
-
-export const toEventError = (err) => (err instanceof ApiError && REFUSALS[err.message]) || err;
 
 export default function useEventForm(event) {
     const initial = useMemo(() => toForm(event), [event]);

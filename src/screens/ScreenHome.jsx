@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -27,9 +27,10 @@ export default function ScreenHome() {
     const { categoryLabel } = useCategories();
     const userLocation = useUserLocation();
 
-    // Un seul appel Google pour tous les événements qui ont des coordonnées
+    // Un seul appel Google pour tous les événements qui ont des coordonnées.
+    // Distances facultatives : en cas d'échec, les cartes s'affichent sans elles.
     const located = (events ?? []).filter(eventCoords);
-    const { data: distances, error: distanceError } = useFetch(
+    const { data: distances } = useFetch(
         () =>
             userLocation && located.length
                 ? getDrivingDistances(userLocation, located.map(eventCoords))
@@ -37,10 +38,6 @@ export default function ScreenHome() {
         [userLocation?.latitude, userLocation?.longitude, located.map((e) => [e.id, e.latitude, e.longitude])]
     );
     const distanceOf = (event) => distances?.[located.indexOf(event)];
-
-    useEffect(() => {
-        if (distanceError) console.warn('Distances indisponibles :', distanceError.message);
-    }, [distanceError]);
 
     const [dismissedError, setDismissedError] = useState(null);
 

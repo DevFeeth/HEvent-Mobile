@@ -20,10 +20,9 @@ import { ApiError, getErrorContent } from '../utils/ApiError';
 import { validateForm } from '../utils/validators/common';
 import { EVENT_LIMITS, parsePrice, ticketTypeRules } from '../utils/validators/eventValidators';
 
+// Doublon générique de l'API : sur cet écran, c'est forcément le nom du type de billet
 const REFUSALS = {
     'This value is already in use': 'Un type de billet porte déjà ce nom pour cet événement.',
-    'The quantity cannot be lower than the number of tickets already sold':
-        'Le nombre de places ne peut pas être inférieur au nombre de billets déjà vendus.',
 };
 
 const toForm = (ticketType) => ({

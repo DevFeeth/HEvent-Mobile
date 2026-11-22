@@ -18,7 +18,8 @@ export default function useUserLocation() {
             if (active) setCoords(current.coords);
         };
 
-        locate().catch((err) => console.warn('Localisation indisponible :', err.message));
+        // GPS coupé ou indisponible : position facultative, l'app fonctionne sans les distances
+        locate().catch(() => {});
 
         return () => {
             active = false;

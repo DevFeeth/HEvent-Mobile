@@ -17,38 +17,12 @@ import { createOrder } from '../services/orderService';
 import { getTicketTypesByEvent } from '../services/ticketTypeService';
 import { selectUser } from '../store/authSlice';
 import { selectTicketTypes, setTicketTypes } from '../store/ticketsSlice';
-import { ApiError } from '../utils/ApiError';
 import { formatDistance } from '../utils/distance';
 import { eventCoords } from '../utils/eventCoords';
 import { formatLongDate, formatTimeRange } from '../utils/formatDateTime';
 import { formatPrice } from '../utils/formatPrice';
 
 const MAX_PER_TYPE = 10;
-
-const ORDER_REFUSALS = {
-    'Not enough tickets available': {
-        title: 'Plus assez de billets',
-        message: 'Il ne reste plus assez de billets pour votre sélection.',
-    },
-    'This event is not open for sale': {
-        title: 'Vente fermée',
-        message: 'Cet événement n’est plus en vente.',
-    },
-    'This promo code is not valid': {
-        title: 'Code promo invalide',
-        message: 'Ce code n’existe pas ou n’est pas valable pour cet événement.',
-    },
-    'The order amount is too low for this promo code': {
-        title: 'Montant insuffisant',
-        message: 'Le montant de la commande est trop bas pour ce code promo.',
-    },
-    'This promo code has reached its usage limit': {
-        title: 'Code promo épuisé',
-        message: 'Ce code promo a atteint sa limite d’utilisation.',
-    },
-};
-
-const toOrderError = (err) => (err instanceof ApiError && ORDER_REFUSALS[err.message]) || err;
 
 function formatAddress(place) {
     if (!place) return null;
@@ -135,7 +109,7 @@ export default function ScreenEventDetail() {
             if (order.status === 'PAID') navigation.navigate('Tickets');
             else navigation.navigate('Checkout', { order, eventName: event.name });
         } catch (err) {
-            setError(toOrderError(err));
+            setError(err);
             refetch();
         } finally {
             setOrdering(false);

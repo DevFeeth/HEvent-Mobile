@@ -54,12 +54,6 @@ export default function AuthForm() {
         setError(null);
     };
 
-    const forgotPassword = () =>
-        setError({
-            title: 'Pas encore disponible',
-            message: "La réinitialisation du mot de passe n'est pas encore disponible.",
-        });
-
     const submit = async () => {
         setError(null);
         if (!validateAll()) return;
@@ -181,12 +175,6 @@ export default function AuthForm() {
                         }
                     />
 
-                    {!isRegister && (
-                        <Pressable onPress={forgotPassword} style={styles.forgot} hitSlop={8}>
-                            <Text style={styles.forgotText}>Mot de passe oublié ?</Text>
-                        </Pressable>
-                    )}
-
                     <Pressable
                         onPress={submit}
                         disabled={submitting}
@@ -298,16 +286,6 @@ const styles = StyleSheet.create({
         opacity: 0.7,
         marginTop: 4,
         marginBottom: 22,
-    },
-    forgot: {
-        alignSelf: 'flex-end',
-        marginTop: -2,
-        marginBottom: 6,
-    },
-    forgotText: {
-        fontSize: 15,
-        fontWeight: '600',
-        color: COLORS.text,
     },
     primaryButton: {
         flexDirection: 'row',

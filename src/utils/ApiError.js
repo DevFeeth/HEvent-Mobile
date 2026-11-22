@@ -1,3 +1,5 @@
+import { API_MESSAGES } from '../constants/apiMessages';
+
 export class ApiError extends Error {
     constructor(status, message, fields = []) {
         super(message);
@@ -23,9 +25,10 @@ const DEFAULT_ERROR = {
     message: 'Une erreur est survenue. Réessayez plus tard.',
 };
 
+// Priorité : message propre à l'écran (overrides, par code HTTP) > refus connu de l'API > message par code HTTP
 export function getErrorContent(error, overrides = {}) {
     if (error instanceof ApiError) {
-        const base = ERRORS[error.status] ?? DEFAULT_ERROR;
+        const base = API_MESSAGES[error.message] ?? ERRORS[error.status] ?? DEFAULT_ERROR;
         const custom = overrides[error.status];
         if (typeof custom === 'string') return { ...base, message: custom };
         return { ...base, ...custom };
