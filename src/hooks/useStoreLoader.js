@@ -7,7 +7,7 @@ import useFetch from './useFetch';
 export default function useStoreLoader(fetcher, toAction, deps = []) {
     const dispatch = useDispatch();
     const { loading, error, refetch } = useFetch(
-        () => fetcher().then((data) => dispatch(toAction(data))),
+        (signal) => fetcher(signal).then((data) => dispatch(toAction(data))),
         deps
     );
     return { loading, error, refetch };

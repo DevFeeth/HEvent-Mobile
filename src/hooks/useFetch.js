@@ -11,24 +11,34 @@ export default function useFetch(fetcher, deps = []) {
     });
 
     const lastRequest = useRef(0);
+    const controllerRef = useRef(null);
 
-    const run = useCallback((runKey) => {
-        const id = ++lastRequest.current;
-        return fetcherRef
-            .current()
-            .then(
-                (data) => ({ data, error: null }),
-                (error) => ({ data: null, error })
-            )
-            .then((res) => {
-                if (id === lastRequest.current) setResult({ key: runKey, ...res });
-            });
-    }, []);
-
+    // Annule la requête en cours : sa réponse sera ignorée et la connexion HTTP coupée
     const cancel = useCallback(() => {
         lastRequest.current++;
+        controllerRef.current?.abort();
     }, []);
 
+    const run = useCallback(
+        (runKey) => {
+            cancel();
+            const id = lastRequest.current;
+            const controller = new AbortController();
+            controllerRef.current = controller;
+            return fetcherRef
+                .current(controller.signal)
+                .then(
+                    (data) => ({ data, error: null }),
+                    (error) => ({ data: null, error })
+                )
+                .then((res) => {
+                    if (id === lastRequest.current) setResult({ key: runKey, ...res });
+                });
+        },
+        [cancel]
+    );
+
+    // Cleanup : écran quitté ou dépendances changées avant la réponse
     useEffect(() => {
         run(key);
         return cancel;

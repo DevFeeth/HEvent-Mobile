@@ -64,7 +64,7 @@ export default function ScreenEventDetail() {
     const user = useSelector(selectUser);
     const ticketData = useSelector(selectTicketTypes(event.id));
     const { refetch } = useStoreLoader(
-        () => getTicketTypesByEvent(event.id),
+        (signal) => getTicketTypesByEvent(event.id, signal),
         (ticketTypes) => setTicketTypes({ eventId: event.id, ticketTypes }),
         [event.id]
     );

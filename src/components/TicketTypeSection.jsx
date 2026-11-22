@@ -24,7 +24,7 @@ const plural = (n, word) => `${n} ${word}${n > 1 ? 's' : ''}`;
 export default function TicketTypeSection({ event }) {
     const ticketTypes = useSelector(selectTicketTypes(event.id));
     const types = useStoreLoader(
-        () => getTicketTypesByEvent(event.id),
+        (signal) => getTicketTypesByEvent(event.id, signal),
         (data) => setTicketTypes({ eventId: event.id, ticketTypes: data }),
         [event.id]
     );

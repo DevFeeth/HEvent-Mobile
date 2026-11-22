@@ -80,7 +80,7 @@ export default function ScreenEvents() {
     const [sheet, setSheet] = useState(null); // 'date' | 'distance' | null
 
     const data = useSelector(selectEvents);
-    const { error, loading, refetch } = useStoreLoader(getEvents, setEvents);
+    const { error, loading, refetch } = useStoreLoader((signal) => getEvents(undefined, signal), setEvents);
     const { categories } = useCategories();
 
     const events = useMemo(
