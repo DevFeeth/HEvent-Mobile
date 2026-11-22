@@ -81,17 +81,12 @@ export default function ScreenEvents() {
 
     const data = useSelector(selectEvents);
     const { error, loading, refetch } = useStoreLoader((signal) => getEvents(undefined, signal), setEvents);
-    const { categories } = useCategories();
+    const { categories, categoryLabel } = useCategories();
 
     const events = useMemo(
         () => asList(data).filter((e) => !e.status || e.status === 'PUBLISHED'),
         [data]
     );
-    const labels = useMemo(
-        () => Object.fromEntries(categories.map((c) => [c.name, c.label])),
-        [categories]
-    );
-
     const located = useMemo(() => events.filter((e) => eventCoords(e)), [events]);
     const { data: distances } = useFetch(
         () =>
@@ -202,13 +197,12 @@ export default function ScreenEvents() {
                     renderItem={({ item }) => (
                         <UpcomingEventCard
                             event={item}
-                            categoryLabel={labels[item.category_name] ?? item.category_name}
+                            categoryLabel={categoryLabel(item.category_name)}
                             userLocation={userLocation}
                             distance={distances?.[item.id] ?? null}
                             onPress={() =>
                                 navigation.navigate('EventDetail', {
                                     event: item,
-                                    categoryLabel: labels[item.category_name] ?? item.category_name,
                                     distance: distances?.[item.id] ?? null,
                                 })
                             }

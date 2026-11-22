@@ -1,6 +1,7 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+import EventImage from './EventImage';
 import EventStatusBanner from './EventStatusBanner';
 import { COLORS } from '../constants/colors';
 import { formatDateTime } from '../utils/formatDateTime';
@@ -12,13 +13,7 @@ export default function OrganizerEventCard({ event, categoryLabel, onScan, onEdi
 
             <View style={styles.body}>
                 <View style={styles.top}>
-                    {event.image_url ? (
-                        <Image source={{ uri: event.image_url }} style={styles.image} />
-                    ) : (
-                        <View style={[styles.image, styles.imagePlaceholder]}>
-                            <Ionicons name="image-outline" size={24} color={COLORS.white} />
-                        </View>
-                    )}
+                    <EventImage uri={event.image_url} style={styles.image} iconSize={24} />
 
                     <View style={styles.info}>
                         <Text style={styles.name} numberOfLines={1}>
@@ -77,11 +72,6 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 12,
-    },
-    imagePlaceholder: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: COLORS.navyLight,
     },
     info: {
         flex: 1,

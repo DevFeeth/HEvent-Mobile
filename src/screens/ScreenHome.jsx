@@ -91,7 +91,6 @@ export default function ScreenHome() {
                                     initial: false,
                                     params: {
                                         event,
-                                        categoryLabel: categoryLabel(event.category_name),
                                         distance: distanceOf(event) ?? null,
                                     },
                                 })

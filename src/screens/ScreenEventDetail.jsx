@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -10,7 +10,9 @@ import ConfirmPopup from '../components/ConfirmPopup';
 import ErrorPopup from '../components/ErrorPopup';
 import Field from '../components/Field';
 import LoadingPopup from '../components/LoadingPopup';
+import EventImage from '../components/EventImage';
 import { COLORS } from '../constants/colors';
+import useCategories from '../hooks/useCategories';
 import useFetch from '../hooks/useFetch';
 import useStoreLoader from '../hooks/useStoreLoader';
 import { createOrder } from '../services/orderService';
@@ -33,7 +35,8 @@ function formatAddress(place) {
 export default function ScreenEventDetail() {
     const navigation = useNavigation();
     const insets = useSafeAreaInsets();
-    const { event, categoryLabel, distance } = useRoute().params;
+    const { event, distance } = useRoute().params;
+    const { categoryLabel } = useCategories();
 
     const user = useSelector(selectUser);
     const ticketData = useSelector(selectTicketTypes(event.id));
@@ -122,13 +125,7 @@ export default function ScreenEventDetail() {
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
                 <View>
-                    {event.image_url ? (
-                        <Image source={{ uri: event.image_url }} style={styles.image} />
-                    ) : (
-                        <View style={[styles.image, styles.imagePlaceholder]}>
-                            <Ionicons name="musical-notes-outline" size={56} color={COLORS.white} />
-                        </View>
-                    )}
+                    <EventImage uri={event.image_url} style={styles.image} iconSize={56} />
 
                     <Pressable
                         onPress={() => navigation.goBack()}
@@ -139,7 +136,7 @@ export default function ScreenEventDetail() {
                     </Pressable>
 
                     <View style={styles.categoryChip}>
-                        <Text style={styles.categoryText}>{categoryLabel}</Text>
+                        <Text style={styles.categoryText}>{categoryLabel(event.category_name)}</Text>
                     </View>
                 </View>
 
@@ -293,7 +290,6 @@ const styles = StyleSheet.create({
     content: { paddingBottom: 200 },
 
     image: { width: '100%', height: 300 },
-    imagePlaceholder: { justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.navyLight },
     backButton: {
         position: 'absolute',
         left: 16,
