@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// État global de l'utilisateur connecté.
-// loading : true tant que la session enregistrée n'a pas été vérifiée au démarrage.
 const authSlice = createSlice({
     name: 'auth',
     initialState: {

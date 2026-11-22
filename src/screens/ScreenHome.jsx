@@ -9,19 +9,22 @@ import ErrorPopup from '../components/ErrorPopup';
 import LoadingPopup from '../components/LoadingPopup';
 import UpcomingEventCard from '../components/UpcomingEventCard';
 import { COLORS } from '../constants/colors';
+import useCategories from '../hooks/useCategories';
 import useFetch from '../hooks/useFetch';
+import useStoreLoader from '../hooks/useStoreLoader';
 import useUserLocation from '../hooks/useUserLocation';
-import { getCategories } from '../services/categoryService';
 import { getDrivingDistances } from '../services/distanceService';
 import { getUpcomingEvents } from '../services/eventService';
 import { selectUser } from '../store/authSlice';
+import { selectUpcomingEvents, setUpcomingEvents } from '../store/eventsSlice';
 import { eventCoords } from '../utils/eventCoords';
 
 export default function ScreenHome() {
     const user = useSelector(selectUser);
     const navigation = useNavigation();
-    const { data: events, loading, error, refetch } = useFetch(getUpcomingEvents);
-    const { data: categories } = useFetch(getCategories);
+    const events = useSelector(selectUpcomingEvents);
+    const { loading, error, refetch } = useStoreLoader(getUpcomingEvents, setUpcomingEvents);
+    const { categoryLabel } = useCategories();
     const userLocation = useUserLocation();
 
     // Un seul appel Google pour tous les événements qui ont des coordonnées
@@ -51,8 +54,6 @@ export default function ScreenHome() {
             refetch();
         }, [refetch])
     );
-
-    const categoryLabel = (name) => categories?.find((c) => c.name === name)?.label ?? name;
 
     return (
         <SafeAreaView style={styles.container} edges={['top']}>

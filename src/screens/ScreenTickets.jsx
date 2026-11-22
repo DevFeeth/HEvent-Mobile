@@ -10,10 +10,11 @@ import LoadingPopup from '../components/LoadingPopup';
 import MyTicketCard from '../components/MyTicketCard';
 import TicketQrModal from '../components/TicketQrModal';
 import { COLORS } from '../constants/colors';
-import useFetch from '../hooks/useFetch';
-import { getCategories } from '../services/categoryService';
+import useCategories from '../hooks/useCategories';
+import useStoreLoader from '../hooks/useStoreLoader';
 import { getMyTickets } from '../services/userService';
 import { selectUser } from '../store/authSlice';
+import { selectMyTickets, setMyTickets } from '../store/ticketsSlice';
 
 const TABS = [
     { key: 'active', label: 'Mes billets', section: 'Billets actifs' },
@@ -48,8 +49,9 @@ export default function ScreenTickets() {
 
 function MyTickets({ userId }) {
     const navigation = useNavigation();
-    const { data: tickets, loading, error: loadError, refetch } = useFetch(getMyTickets, [userId]);
-    const { data: categories } = useFetch(getCategories);
+    const tickets = useSelector(selectMyTickets);
+    const { loading, error: loadError, refetch } = useStoreLoader(getMyTickets, setMyTickets, [userId]);
+    const { categoryLabel } = useCategories();
     const [tab, setTab] = useState('active');
     const [shown, setShown] = useState(null);
     const [error, setError] = useState(null);
@@ -64,8 +66,6 @@ function MyTickets({ userId }) {
             refetch();
         }, [refetch])
     );
-
-    const categoryLabel = (name) => categories?.find((c) => c.name === name)?.label ?? name;
 
     const { active, history } = useMemo(() => {
         const today = todayUtc();

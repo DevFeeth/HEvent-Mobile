@@ -12,9 +12,11 @@ import Field from '../components/Field';
 import LoadingPopup from '../components/LoadingPopup';
 import { COLORS } from '../constants/colors';
 import useFetch from '../hooks/useFetch';
+import useStoreLoader from '../hooks/useStoreLoader';
 import { createOrder } from '../services/orderService';
 import { getTicketTypesByEvent } from '../services/ticketTypeService';
 import { selectUser } from '../store/authSlice';
+import { selectTicketTypes, setTicketTypes } from '../store/ticketsSlice';
 import { ApiError } from '../utils/ApiError';
 import { formatDistance } from '../utils/distance';
 import { eventCoords } from '../utils/eventCoords';
@@ -60,7 +62,12 @@ export default function ScreenEventDetail() {
     const { event, categoryLabel, distance } = useRoute().params;
 
     const user = useSelector(selectUser);
-    const { data: ticketData, refetch } = useFetch(() => getTicketTypesByEvent(event.id), [event.id]);
+    const ticketData = useSelector(selectTicketTypes(event.id));
+    const { refetch } = useStoreLoader(
+        () => getTicketTypesByEvent(event.id),
+        (ticketTypes) => setTicketTypes({ eventId: event.id, ticketTypes }),
+        [event.id]
+    );
     const ticketTypes = useMemo(() => ticketData ?? [], [ticketData]);
 
     const [quantities, setQuantities] = useState({});

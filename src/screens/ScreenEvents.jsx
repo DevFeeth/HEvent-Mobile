@@ -12,17 +12,20 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 import OptionSheet from '../components/OptionSheet';
 import UpcomingEventCard from '../components/UpcomingEventCard';
 import { COLORS } from '../constants/colors';
+import useCategories from '../hooks/useCategories';
 import useFetch from '../hooks/useFetch';
+import useStoreLoader from '../hooks/useStoreLoader';
 import useUserLocation from '../hooks/useUserLocation';
-import { getCategories } from '../services/categoryService';
 import { getDrivingDistances } from '../services/distanceService';
 import { getEvents } from '../services/eventService';
+import { selectEvents, setEvents } from '../store/eventsSlice';
 import { eventCoords } from '../utils/eventCoords';
-import { useNavigation } from '@react-navigation/native';
 
 const DATE_OPTIONS = [
     { value: 'ALL', label: 'Toutes les dates', short: 'Toutes' },
@@ -76,14 +79,14 @@ export default function ScreenEvents() {
     const [maxKm, setMaxKm] = useState(null);
     const [sheet, setSheet] = useState(null); // 'date' | 'distance' | null
 
-    const { data, error, loading, refetch } = useFetch(() => getEvents(), []);
-    const { data: categoriesData } = useFetch(() => getCategories(), []);
+    const data = useSelector(selectEvents);
+    const { error, loading, refetch } = useStoreLoader(getEvents, setEvents);
+    const { categories } = useCategories();
 
     const events = useMemo(
         () => asList(data).filter((e) => !e.status || e.status === 'PUBLISHED'),
         [data]
     );
-    const categories = useMemo(() => asList(categoriesData), [categoriesData]);
     const labels = useMemo(
         () => Object.fromEntries(categories.map((c) => [c.name, c.label])),
         [categories]

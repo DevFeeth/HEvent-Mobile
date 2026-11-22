@@ -13,8 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Field from './Field';
 import { COLORS } from '../constants/colors';
 import { CREATE_EVENT_STATUSES, EVENT_STATUSES } from '../constants/eventStatus';
-import useFetch from '../hooks/useFetch';
-import { getCategories } from '../services/categoryService';
+import useCategories from '../hooks/useCategories';
 import { maskDateInput, maskTimeInput } from '../utils/formatDateTime';
 import { EVENT_LIMITS } from '../utils/validators/eventValidators';
 
@@ -33,7 +32,7 @@ export default function EventForm({
     onSubmit,
     onCancel,
 }) {
-    const { data: categories } = useFetch(getCategories);
+    const { categories } = useCategories();
     const statuses = mode === 'create' ? CREATE_EVENT_STATUSES : EVENT_STATUSES;
 
     const imageUrl = form.image_url.trim();
