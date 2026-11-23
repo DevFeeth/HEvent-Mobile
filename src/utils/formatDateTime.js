@@ -47,5 +47,19 @@ export function formatLongDate(isoDate) {
     return `${DAYS[d.getUTCDay()]} ${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
 }
 
+// start_date + start_time de l'API → Date locale (ex. 12 juillet 20:00, heure du téléphone)
+// Les deux valeurs se lisent en UTC, comme pour l'affichage
+export function toLocalDateTime(isoDate, isoTime) {
+    const d = new Date(isoDate);
+    const t = isoTime ? new Date(isoTime) : null;
+    return new Date(
+        d.getUTCFullYear(),
+        d.getUTCMonth(),
+        d.getUTCDate(),
+        t ? t.getUTCHours() : 0,
+        t ? t.getUTCMinutes() : 0
+    );
+}
+
 // start_time / end_time de l'API → "20:00 – 23:30"
 export const formatTimeRange = (start, end) => `${isoToTimeInput(start)} – ${isoToTimeInput(end)}`;
