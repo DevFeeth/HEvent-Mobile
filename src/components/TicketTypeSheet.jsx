@@ -14,15 +14,15 @@ import { Ionicons } from '@expo/vector-icons';
 
 import Field from './Field';
 import { COLORS } from '../constants/colors';
+import useFormErrors from '../hooks/useFormErrors';
 import { addTicketType, updateTicketType } from '../services/ticketTypeService';
 import { ApiError, getErrorContent } from '../utils/ApiError';
 import { validateForm } from '../utils/validators/common';
 import { EVENT_LIMITS, parsePrice, ticketTypeRules } from '../utils/validators/eventValidators';
 
+// Doublon générique de l'API : sur cet écran, c'est forcément le nom du type de billet
 const REFUSALS = {
     'This value is already in use': 'Un type de billet porte déjà ce nom pour cet événement.',
-    'The quantity cannot be lower than the number of tickets already sold':
-        'Le nombre de places ne peut pas être inférieur au nombre de billets déjà vendus.',
 };
 
 const toForm = (ticketType) => ({
@@ -44,7 +44,12 @@ export default function TicketTypeSheet({ visible, eventId, ticketType, sold = 0
     const isEdit = !!ticketType;
     const [initial, setInitial] = useState(() => toForm(ticketType));
     const [form, setForm] = useState(initial);
-    const [fieldErrors, setFieldErrors] = useState({});
+    const {
+        errors: fieldErrors,
+        touch,
+        validateAll,
+        reset,
+    } = useFormErrors(validateForm(form, ticketTypeRules(sold)));
     const [error, setError] = useState(null);
     const [saving, setSaving] = useState(false);
 
@@ -56,7 +61,7 @@ export default function TicketTypeSheet({ visible, eventId, ticketType, sold = 0
             const next = toForm(ticketType);
             setInitial(next);
             setForm(next);
-            setFieldErrors({});
+            reset();
             setError(null);
         }
     }
@@ -65,10 +70,8 @@ export default function TicketTypeSheet({ visible, eventId, ticketType, sold = 0
         setForm((f) => ({ ...f, [field]: mask ? mask(value) : value }));
 
     const submit = async () => {
-        const errors = validateForm(form, ticketTypeRules(sold));
-        setFieldErrors(errors);
         setError(null);
-        if (Object.keys(errors).length) return;
+        if (!validateAll()) return;
 
         const fields = Object.keys(TO_API).filter(
             (field) => !isEdit || form[field].trim() !== initial[field].trim()
@@ -126,6 +129,7 @@ export default function TicketTypeSheet({ visible, eventId, ticketType, sold = 0
                             value={form.name}
                             onChangeText={update('name')}
                             error={fieldErrors.name}
+                            onBlur={touch('name')}
                             maxLength={EVENT_LIMITS.ticketTypeName}
                         />
                         <Field
@@ -135,6 +139,7 @@ export default function TicketTypeSheet({ visible, eventId, ticketType, sold = 0
                             value={form.description}
                             onChangeText={update('description')}
                             error={fieldErrors.description}
+                            onBlur={touch('description')}
                             maxLength={EVENT_LIMITS.ticketTypeDescription}
                             multiline
                         />
@@ -147,6 +152,7 @@ export default function TicketTypeSheet({ visible, eventId, ticketType, sold = 0
                                     value={form.price}
                                     onChangeText={update('price', (v) => v.replace(/[^\d.,]/g, ''))}
                                     error={fieldErrors.price}
+                                    onBlur={touch('price')}
                                     keyboardType="decimal-pad"
                                     maxLength={11}
                                 />
@@ -159,6 +165,7 @@ export default function TicketTypeSheet({ visible, eventId, ticketType, sold = 0
                                     value={form.available_quantity}
                                     onChangeText={update('available_quantity', (v) => v.replace(/\D/g, ''))}
                                     error={fieldErrors.available_quantity}
+                                    onBlur={touch('available_quantity')}
                                     keyboardType="number-pad"
                                     maxLength={7}
                                 />

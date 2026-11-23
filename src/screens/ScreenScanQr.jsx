@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 
+import { API_MESSAGES } from '../constants/apiMessages';
 import { COLORS } from '../constants/colors';
 import { scanTicket } from '../services/ticketService';
 import { ApiError } from '../utils/ApiError';
@@ -13,18 +14,7 @@ const SAME_CODE_COOLDOWN_MS = 30000;
 const RESULT_DURATION_MS = { success: 2500, warning: 4000, error: 4000 };
 const QR_MAX_LENGTH = 500;
 
-const REFUSALS = {
-    'This ticket has already been used': 'Ce billet a déjà été utilisé.',
-    'This ticket has been cancelled': 'Ce billet a été annulé.',
-    'The order of this ticket is not paid': "La commande de ce billet n'est pas payée.",
-    'This event is not open for entry': "L'événement n'est pas ouvert à l'entrée.",
-    'This event has not started yet': "L'événement n'a pas encore commencé.",
-    'This event is over': "L'événement est terminé.",
-    'This QR code has expired, the ticket owner must refresh it':
-        'QR code expiré : le participant doit rafraîchir son billet.',
-    'This QR code is not valid': "Ce QR code n'est pas un billet valide.",
-};
-
+// Messages propres au scan, quand l'API ne renvoie pas un refus connu (API_MESSAGES)
 const STATUS_MESSAGES = {
     0: 'Serveur injoignable. Vérifiez votre connexion.',
     400: "Ce QR code n'est pas un billet valide.",
@@ -57,7 +47,7 @@ function successResult(ticket, event) {
 
 function errorResult(err) {
     if (err instanceof ApiError) {
-        const message = REFUSALS[err.message] ?? STATUS_MESSAGES[err.status];
+        const message = API_MESSAGES[err.message]?.message ?? STATUS_MESSAGES[err.status];
         if (message) return { kind: 'error', title: 'Entrée refusée', message };
     }
     return { kind: 'error', title: 'Erreur', message: 'Le billet n’a pas pu être vérifié. Réessayez.' };

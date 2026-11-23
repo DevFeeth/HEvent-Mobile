@@ -1,0 +1,24 @@
+HEvent - Comptes de test
+========================
+
+
+Mot de passe de tous les comptes : password
+
+Type d'utilisateur   Login (e-mail)
+------------------   --------------
+Utilisateur          user@mail.com
+Organisateur         orga@mail.com
+Administrateur       admin@mail.com
+
+
+Autres comptes de démonstration (même mot de passe)
+---------------------------------------------------
+Organisateur         contact@meuse-prod.be
+Organisateur         booking@liege-live.be
+Utilisateur          lucas.peeters@gmail.com
+Compte désactivé     thibault.gilson@gmail.com   (la connexion est refusée)
+
+
+Paiement (simulé) :
+« Visa •••• 4242 » pour un paiement accepté,
+« Visa •••• 0002 » pour un paiement refusé.

@@ -1,26 +1,30 @@
-import { useMemo, useState } from 'react';
-import { Alert, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
+import ConfirmPopup from '../components/ConfirmPopup';
+import ErrorPopup from '../components/ErrorPopup';
+import Field from '../components/Field';
+import LoadingPopup from '../components/LoadingPopup';
+import EventImage from '../components/EventImage';
 import { COLORS } from '../constants/colors';
+import useCategories from '../hooks/useCategories';
 import useFetch from '../hooks/useFetch';
-import { getEventById } from '../services/eventService';
+import useStoreLoader from '../hooks/useStoreLoader';
+import { createOrder } from '../services/orderService';
+import { getTicketTypesByEvent } from '../services/ticketTypeService';
+import { selectUser } from '../store/authSlice';
+import { selectTicketTypes, setTicketTypes } from '../store/ticketsSlice';
 import { formatDistance } from '../utils/distance';
 import { eventCoords } from '../utils/eventCoords';
-import { formatLongDate } from '../utils/formatDateTime';
-import { getTicketTypes } from '../services/eventService';
+import { formatLongDate, formatTimeRange } from '../utils/formatDateTime';
+import { formatPrice } from '../utils/formatPrice';
 
 const MAX_PER_TYPE = 10;
-
-const hhmm = (time) => (time ?? '').slice(time?.includes('T') ? 11 : 0).slice(0, 5);
-
-const euro = (value) => {
-    const n = Number(value);
-    return `${n.toFixed(Number.isInteger(n) ? 0 : 2).replace('.', ',')} €`;
-};
 
 function formatAddress(place) {
     if (!place) return null;
@@ -31,12 +35,35 @@ function formatAddress(place) {
 export default function ScreenEventDetail() {
     const navigation = useNavigation();
     const insets = useSafeAreaInsets();
-    const { event, categoryLabel, distance } = useRoute().params;
+    const { event, distance } = useRoute().params;
+    const { categoryLabel } = useCategories();
 
-    const { data: ticketData } = useFetch(() => getTicketTypes(event.id), [event.id]);
+    const user = useSelector(selectUser);
+    const ticketData = useSelector(selectTicketTypes(event.id));
+    const { refetch } = useStoreLoader(
+        (signal) => getTicketTypesByEvent(event.id, signal),
+        (ticketTypes) => setTicketTypes({ eventId: event.id, ticketTypes }),
+        [event.id]
+    );
     const ticketTypes = useMemo(() => ticketData ?? [], [ticketData]);
 
     const [quantities, setQuantities] = useState({});
+    const [promoCode, setPromoCode] = useState('');
+    const [ordering, setOrdering] = useState(false);
+    const [error, setError] = useState(null);
+    const [loginPrompt, setLoginPrompt] = useState(false);
+
+    // Au retour du paiement (ou d'une commande abandonnée), le stock restant a changé
+    const firstFocus = useRef(true);
+    useFocusEffect(
+        useCallback(() => {
+            if (firstFocus.current) {
+                firstFocus.current = false;
+                return;
+            }
+            refetch();
+        }, [refetch])
+    );
 
     const coords = eventCoords(event);
     const { data: places } = useFetch(
@@ -57,18 +84,40 @@ export default function ScreenEventDetail() {
         [ticketTypes, quantities]
     );
 
-    const soldOut = ticketTypes.length > 0 && ticketTypes.every((t) => t.available_quantity <= 0);
+    // remaining_quantity : billets encore en vente (available_quantity est le total du type)
+    const soldOut = ticketTypes.length > 0 && ticketTypes.every((t) => t.remaining_quantity <= 0);
 
     const change = (type, delta) =>
         setQuantities((q) => {
-            const max = Math.min(type.available_quantity, MAX_PER_TYPE);
+            const max = Math.min(type.remaining_quantity, MAX_PER_TYPE);
             const next = Math.min(Math.max((q[type.id] ?? 0) + delta, 0), max);
             return { ...q, [type.id]: next };
         });
 
-    // TODO : appeler l'API de commande quand elle sera connue
-    const reserve = () =>
-        Alert.alert('Réservation', `${count} billet(s) pour ${euro(total)}. Le paiement n'est pas encore branché.`);
+    const reserve = async () => {
+        if (!user) {
+            setLoginPrompt(true);
+            return;
+        }
+        const items = Object.entries(quantities)
+            .filter(([, quantity]) => quantity > 0)
+            .map(([id, quantity]) => ({ ticket_type_id: Number(id), quantity }));
+
+        setOrdering(true);
+        try {
+            const order = await createOrder(items, promoCode.trim());
+            setQuantities({});
+            setPromoCode('');
+            // Une commande à 0 € est payée directement par l'API
+            if (order.status === 'PAID') navigation.navigate('Tickets');
+            else navigation.navigate('Checkout', { order, eventName: event.name });
+        } catch (err) {
+            setError(err);
+            refetch();
+        } finally {
+            setOrdering(false);
+        }
+    };
 
     const sameDay = event.start_date === event.end_date;
 
@@ -76,13 +125,7 @@ export default function ScreenEventDetail() {
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
                 <View>
-                    {event.image_url ? (
-                        <Image source={{ uri: event.image_url }} style={styles.image} />
-                    ) : (
-                        <View style={[styles.image, styles.imagePlaceholder]}>
-                            <Ionicons name="musical-notes-outline" size={56} color={COLORS.white} />
-                        </View>
-                    )}
+                    <EventImage uri={event.image_url} style={styles.image} iconSize={56} />
 
                     <Pressable
                         onPress={() => navigation.goBack()}
@@ -93,7 +136,7 @@ export default function ScreenEventDetail() {
                     </Pressable>
 
                     <View style={styles.categoryChip}>
-                        <Text style={styles.categoryText}>{categoryLabel}</Text>
+                        <Text style={styles.categoryText}>{categoryLabel(event.category_name)}</Text>
                     </View>
                 </View>
 
@@ -121,7 +164,7 @@ export default function ScreenEventDetail() {
                                     {!sameDay && ` au ${formatLongDate(event.end_date)}`}
                                 </Text>
                                 <Text style={styles.infoSub}>
-                                    {hhmm(event.start_time)} — {hhmm(event.end_time)}
+                                    {formatTimeRange(event.start_time, event.end_time)}
                                 </Text>
                             </View>
                         </View>
@@ -154,7 +197,7 @@ export default function ScreenEventDetail() {
                         <View style={styles.tickets}>
                             {ticketTypes.map((type) => {
                                 const qty = quantities[type.id] ?? 0;
-                                const unavailable = type.available_quantity <= 0;
+                                const unavailable = type.remaining_quantity <= 0;
                                 return (
                                     <View key={type.id} style={[styles.ticket, unavailable && styles.ticketOff]}>
                                         <View style={styles.ticketInfo}>
@@ -167,7 +210,7 @@ export default function ScreenEventDetail() {
                                                 </Text>
                                             )}
                                         </View>
-                                        <Text style={styles.price}>{euro(type.price)}</Text>
+                                        <Text style={styles.price}>{formatPrice(type.price)}</Text>
                                         <View style={styles.stepper}>
                                             <Pressable
                                                 onPress={() => change(type, -1)}
@@ -194,20 +237,50 @@ export default function ScreenEventDetail() {
                             })}
                         </View>
                     )}
+
+                    {count > 0 && (
+                        <View style={styles.promo}>
+                            <Field
+                                label="Code promo"
+                                icon="pricetag-outline"
+                                placeholder="Facultatif"
+                                value={promoCode}
+                                onChangeText={(v) => setPromoCode(v.toUpperCase())}
+                                autoCapitalize="characters"
+                                autoCorrect={false}
+                                maxLength={50}
+                            />
+                        </View>
+                    )}
                 </View>
             </ScrollView>
 
             <Pressable
                 onPress={reserve}
-                disabled={count === 0}
+                disabled={count === 0 || ordering}
                 style={({ pressed }) => [
                     styles.reserve,
-                    (count === 0 || pressed) && styles.reserveDim,
+                    (count === 0 || ordering || pressed) && styles.reserveDim,
                 ]}
             >
                 <Ionicons name="ticket-outline" size={22} color={COLORS.white} />
-                <Text style={styles.reserveText}>{count > 0 ? `Réserver · ${euro(total)}` : 'Réserver'}</Text>
+                <Text style={styles.reserveText}>{count > 0 ? `Réserver · ${formatPrice(total)}` : 'Réserver'}</Text>
             </Pressable>
+
+            <LoadingPopup visible={ordering} title="Réservation..." message="Nous réservons vos billets." />
+            <ErrorPopup error={error} onClose={() => setError(null)} />
+            <ConfirmPopup
+                visible={loginPrompt}
+                title="Connexion requise"
+                message="Connectez-vous ou créez un compte pour réserver vos billets."
+                confirmLabel="Se connecter"
+                icon="person-outline"
+                onConfirm={() => {
+                    setLoginPrompt(false);
+                    navigation.navigate('Profile');
+                }}
+                onCancel={() => setLoginPrompt(false)}
+            />
         </View>
     );
 }
@@ -217,7 +290,6 @@ const styles = StyleSheet.create({
     content: { paddingBottom: 200 },
 
     image: { width: '100%', height: 300 },
-    imagePlaceholder: { justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.navyLight },
     backButton: {
         position: 'absolute',
         left: 16,
@@ -300,6 +372,7 @@ const styles = StyleSheet.create({
     price: { fontSize: 20, fontWeight: '800', color: COLORS.navy },
     stepper: { flexDirection: 'row', alignItems: 'center', gap: 6 },
     qty: { minWidth: 22, textAlign: 'center', fontSize: 20, fontWeight: '800', color: COLORS.navy },
+    promo: { marginTop: 20 },
 
     reserve: {
         position: 'absolute',

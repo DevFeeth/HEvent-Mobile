@@ -1,6 +1,6 @@
 import { api } from '../api/client';
 
-export const getTicketTypesByEvent = (eventId) => api.get(`/events/${eventId}/ticket-types`);
+export const getTicketTypesByEvent = (eventId, signal) => api.get(`/events/${eventId}/ticket-types`, { signal });
 
 export const addTicketType = (eventId, ticketType) => api.post(`/events/${eventId}/ticket-types`, ticketType);
 

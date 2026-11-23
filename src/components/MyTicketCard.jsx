@@ -1,6 +1,6 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import EventImage from './EventImage';
 import { COLORS } from '../constants/colors';
 import { formatLongDate, formatTimeRange } from '../utils/formatDateTime';
 
@@ -18,13 +18,7 @@ export default function MyTicketCard({ ticket, categoryLabel, badge, onShow, onT
     return (
         <View style={[styles.card, badge && styles.cardPast]}>
             <View style={styles.top}>
-                {event.image_url ? (
-                    <Image source={{ uri: event.image_url }} style={styles.image} />
-                ) : (
-                    <View style={[styles.image, styles.imagePlaceholder]}>
-                        <Ionicons name="musical-notes-outline" size={26} color={COLORS.white} />
-                    </View>
-                )}
+                <EventImage uri={event.image_url} style={styles.image} iconSize={26} />
 
                 <View style={styles.info}>
                     <View style={styles.titleRow}>
@@ -82,11 +76,6 @@ const styles = StyleSheet.create({
     cardPast: { opacity: 0.85 },
     top: { flexDirection: 'row', gap: 12 },
     image: { width: 64, height: 64, borderRadius: 12 },
-    imagePlaceholder: {
-        backgroundColor: COLORS.navyLight,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     info: { flex: 1, justifyContent: 'center', gap: 3 },
     titleRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
     name: { flexShrink: 1, fontSize: 18, fontWeight: '700', color: COLORS.text },

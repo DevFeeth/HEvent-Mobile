@@ -4,9 +4,15 @@ import { API_URL } from './config';
 const TIMEOUT_MS = 10000;
 
 let authToken = null;
+let onUnauthorized = null;
 
 export function setAuthToken(token) {
     authToken = token;
+}
+
+// Appelé quand l'API refuse le token (expiré, compte désactivé...) : useSessionRestore déconnecte l'utilisateur
+export function setUnauthorizedHandler(handler) {
+    onUnauthorized = handler;
 }
 
 function buildQuery(params) {
@@ -22,13 +28,23 @@ function buildQuery(params) {
     return query ? `?${query}` : '';
 }
 
-async function request(method, path, { body, params } = {}) {
+// signal : permet à l'écran d'annuler la requête (ex. écran quitté avant la réponse)
+async function request(method, path, { body, params, signal } = {}) {
     const headers = { Accept: 'application/json' };
     if (body !== undefined) headers['Content-Type'] = 'application/json';
-    if (authToken) headers.Authorization = `Bearer ${authToken}`;
+    const sentToken = authToken;
+    if (sentToken) headers.Authorization = `Bearer ${sentToken}`;
 
+    // Un seul AbortController pour les deux causes d'annulation : le timeout et l'écran
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+    let timedOut = false;
+    const timer = setTimeout(() => {
+        timedOut = true;
+        controller.abort();
+    }, TIMEOUT_MS);
+    const cancel = () => controller.abort();
+    if (signal?.aborted) cancel();
+    signal?.addEventListener('abort', cancel);
 
     let response;
     let text;
@@ -41,9 +57,12 @@ async function request(method, path, { body, params } = {}) {
         });
         text = await response.text();
     } catch (err) {
-        throw new ApiError(0, controller.signal.aborted ? `Timeout after ${TIMEOUT_MS} ms` : err.message);
+        // Annulée par l'écran : ce n'est pas une erreur réseau, l'appelant ignore la réponse
+        if (controller.signal.aborted && !timedOut) throw err;
+        throw new ApiError(0, timedOut ? `Timeout after ${TIMEOUT_MS} ms` : err.message);
     } finally {
         clearTimeout(timer);
+        signal?.removeEventListener('abort', cancel);
     }
 
     let data = text;
@@ -52,6 +71,10 @@ async function request(method, path, { body, params } = {}) {
     } catch {
         // On garde la data brut
     }
+
+    // Sans token envoyé (ex. mauvais mot de passe au login), un 401 ne veut pas dire « session expirée ».
+    // Si le token a changé entre-temps (reconnexion), on ne déconnecte pas la nouvelle session.
+    if (response.status === 401 && sentToken && sentToken === authToken) onUnauthorized?.();
 
     if (!response.ok) {
         const fields = Array.isArray(data) ? data : [];

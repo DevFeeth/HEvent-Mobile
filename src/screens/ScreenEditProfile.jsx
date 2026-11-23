@@ -11,14 +11,17 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 import ConfirmPopup from '../components/ConfirmPopup';
 import ErrorPopup from '../components/ErrorPopup';
 import Field from '../components/Field';
 import LoadingPopup from '../components/LoadingPopup';
 import { COLORS } from '../constants/colors';
-import { useAuth } from '../context/AuthContext';
+import useAuth from '../hooks/useAuth';
+import useFormErrors from '../hooks/useFormErrors';
 import useUnsavedChangesGuard from '../hooks/useUnsavedChangesGuard';
+import { selectUser } from '../store/authSlice';
 import { ApiError } from '../utils/ApiError';
 import { AUTH_LIMITS, PROFILE_RULES } from '../utils/validators/authValidators';
 import { validateForm } from '../utils/validators/common';
@@ -29,7 +32,8 @@ const MESSAGES = {
 
 export default function ScreenEditProfile() {
     const navigation = useNavigation();
-    const { user, updateProfile } = useAuth();
+    const user = useSelector(selectUser);
+    const { updateProfile } = useAuth();
 
     const [initial] = useState(() => ({
         last_name: user.last_name ?? '',
@@ -40,7 +44,7 @@ export default function ScreenEditProfile() {
         city: user.city ?? '',
     }));
     const [form, setForm] = useState(initial);
-    const [fieldErrors, setFieldErrors] = useState({});
+    const { errors: fieldErrors, touch, validateAll } = useFormErrors(validateForm(form, PROFILE_RULES));
     const [error, setError] = useState(null);
     const [submitting, setSubmitting] = useState(false);
 
@@ -50,10 +54,8 @@ export default function ScreenEditProfile() {
     const update = (field) => (value) => setForm((f) => ({ ...f, [field]: value }));
 
     const submit = async () => {
-        const errors = validateForm(form, PROFILE_RULES);
-        setFieldErrors(errors);
         setError(null);
-        if (Object.keys(errors).length) return;
+        if (!validateAll()) return;
 
         setSubmitting(true);
         try {
@@ -106,6 +108,7 @@ export default function ScreenEditProfile() {
                             value={form.last_name}
                             onChangeText={update('last_name')}
                             error={fieldErrors.last_name}
+                            onBlur={touch('last_name')}
                             autoComplete="family-name"
                             maxLength={AUTH_LIMITS.name}
                         />
@@ -116,6 +119,7 @@ export default function ScreenEditProfile() {
                             value={form.first_name}
                             onChangeText={update('first_name')}
                             error={fieldErrors.first_name}
+                            onBlur={touch('first_name')}
                             autoComplete="given-name"
                             maxLength={AUTH_LIMITS.name}
                         />
@@ -131,6 +135,8 @@ export default function ScreenEditProfile() {
                             placeholder="Numéro et rue"
                             value={form.address}
                             onChangeText={update('address')}
+                            error={fieldErrors.address}
+                            onBlur={touch('address')}
                             autoComplete="street-address"
                             maxLength={AUTH_LIMITS.address}
                         />
@@ -144,6 +150,7 @@ export default function ScreenEditProfile() {
                                     value={form.postal_code}
                                     onChangeText={update('postal_code')}
                                     error={fieldErrors.postal_code}
+                                    onBlur={touch('postal_code')}
                                     keyboardType="number-pad"
                                     autoComplete="postal-code"
                                     maxLength={AUTH_LIMITS.postalCode}
@@ -156,6 +163,8 @@ export default function ScreenEditProfile() {
                                     placeholder="Ville"
                                     value={form.city}
                                     onChangeText={update('city')}
+                                    error={fieldErrors.city}
+                                    onBlur={touch('city')}
                                     maxLength={AUTH_LIMITS.city}
                                 />
                             </View>

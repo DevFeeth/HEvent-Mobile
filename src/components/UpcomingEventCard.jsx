@@ -1,7 +1,8 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 
+import EventImage from './EventImage';
 import { COLORS } from '../constants/colors';
 import useFetch from '../hooks/useFetch';
 import { formatDistance } from '../utils/distance';
@@ -28,13 +29,7 @@ export default function UpcomingEventCard({ event, categoryLabel, userLocation, 
 
     return (
         <Pressable onPress={onPress} style={({ pressed }) => [styles.card, pressed && styles.pressed]}>
-            {event.image_url ? (
-                <Image source={{ uri: event.image_url }} style={styles.image} />
-            ) : (
-                <View style={[styles.image, styles.imagePlaceholder]}>
-                    <Ionicons name="musical-notes-outline" size={26} color={COLORS.white} />
-                </View>
-            )}
+            <EventImage uri={event.image_url} style={styles.image} iconSize={26} />
 
             <View style={styles.info}>
                 <Text style={styles.name} numberOfLines={1}>
@@ -75,11 +70,6 @@ const styles = StyleSheet.create({
         width: 72,
         height: 72,
         borderRadius: 14,
-    },
-    imagePlaceholder: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: COLORS.navyLight,
     },
     info: {
         flex: 1,
