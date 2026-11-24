@@ -181,7 +181,7 @@ export default function ScreenEventDetail() {
                                 <Text style={styles.infoValue} numberOfLines={2}>
                                     {address ?? 'Lieu non précisé'}
                                 </Text>
-                                {distance != null && <Text style={styles.infoSub}>{formatDistance(distance)}</Text>}
+                                {Number.isFinite(distance) && <Text style={styles.infoSub}>{formatDistance(distance)}</Text>}
                             </View>
                         </View>
                     </View>

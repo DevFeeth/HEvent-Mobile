@@ -34,7 +34,7 @@ export default function TicketTypeSection({ event }) {
     const [error, setError] = useState(null);
 
     const list = ticketTypes ?? [];
-    const ready = ticketTypes != null;
+    const ready = Array.isArray(ticketTypes);
     // available_quantity : total du type ; remaining_quantity : encore en vente (calculé par l'API)
     const soldOf = (ticketType) => ticketType.available_quantity - ticketType.remaining_quantity;
     const total = list.reduce((sum, t) => sum + Number(t.available_quantity), 0);

@@ -13,7 +13,7 @@ import useCategories from '../hooks/useCategories';
 import useFetch from '../hooks/useFetch';
 import useStoreLoader from '../hooks/useStoreLoader';
 import useUserLocation from '../hooks/useUserLocation';
-import { getDrivingDistances } from '../services/distanceService';
+import { getDistances } from '../services/distanceService';
 import { getUpcomingEvents } from '../services/eventService';
 import { selectUser } from '../store/authSlice';
 import { selectUpcomingEvents, setUpcomingEvents } from '../store/eventsSlice';
@@ -28,12 +28,12 @@ export default function ScreenHome() {
     const userLocation = useUserLocation();
 
     // Un seul appel Google pour tous les événements qui ont des coordonnées.
-    // Distances facultatives : en cas d'échec, les cartes s'affichent sans elles.
+    // Si Google échoue, getDistances renvoie les distances à vol d'oiseau.
     const located = (events ?? []).filter(eventCoords);
     const { data: distances } = useFetch(
         () =>
             userLocation && located.length
-                ? getDrivingDistances(userLocation, located.map(eventCoords))
+                ? getDistances(userLocation, located.map(eventCoords))
                 : Promise.resolve(null),
         [userLocation?.latitude, userLocation?.longitude, located.map((e) => [e.id, e.latitude, e.longitude])]
     );
