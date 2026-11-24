@@ -22,7 +22,7 @@ import useCategories from '../hooks/useCategories';
 import useFetch from '../hooks/useFetch';
 import useStoreLoader from '../hooks/useStoreLoader';
 import useUserLocation from '../hooks/useUserLocation';
-import { getDrivingDistances } from '../services/distanceService';
+import { getDistances } from '../services/distanceService';
 import { getEvents } from '../services/eventService';
 import { selectEvents, setEvents } from '../store/eventsSlice';
 import { eventCoords } from '../utils/eventCoords';
@@ -61,7 +61,7 @@ async function distancesFor(origin, events) {
     const result = {};
     for (let i = 0; i < events.length; i += 25) {
         const chunk = events.slice(i, i + 25);
-        const km = await getDrivingDistances(origin, chunk.map(eventCoords));
+        const km = await getDistances(origin, chunk.map(eventCoords));
         chunk.forEach((event, index) => {
             result[event.id] = km[index];
         });
@@ -102,11 +102,11 @@ export default function ScreenEvents() {
             .filter((e) => !query || normalize(e.name).includes(query))
             .filter((e) => category === 'ALL' || e.category_name === category)
             .filter((e) => matchesDate(e, datePreset))
-            .filter((e) => maxKm == null || (distances?.[e.id] != null && distances[e.id] <= maxKm))
+            .filter((e) => maxKm === null || (Number.isFinite(distances?.[e.id]) && distances[e.id] <= maxKm))
             .sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
     }, [events, search, category, datePreset, maxKm, distances]);
 
-    const activeFilters = [category !== 'ALL', datePreset !== 'ALL', maxKm != null].filter(Boolean).length;
+    const activeFilters = [category !== 'ALL', datePreset !== 'ALL', maxKm !== null].filter(Boolean).length;
 
     const reset = () => {
         setSearch('');
@@ -225,7 +225,7 @@ export default function ScreenEvents() {
                         )
                     }
                     refreshControl={
-                        <RefreshControl refreshing={loading && data != null} onRefresh={refetch} />
+                        <RefreshControl refreshing={loading && Boolean(data)} onRefresh={refetch} />
                     }
                     keyboardShouldPersistTaps="handled"
                     showsVerticalScrollIndicator={false}

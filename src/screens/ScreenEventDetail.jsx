@@ -6,11 +6,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
+import BottomFade from '../components/BottomFade';
 import ConfirmPopup from '../components/ConfirmPopup';
 import EventMenu from '../components/EventMenu';
 import ErrorPopup from '../components/ErrorPopup';
 import Field from '../components/Field';
 import LoadingPopup from '../components/LoadingPopup';
+import SuccessPopup from '../components/SuccessPopup';
 import EventImage from '../components/EventImage';
 import { COLORS } from '../constants/colors';
 import useCategories from '../hooks/useCategories';
@@ -53,6 +55,7 @@ export default function ScreenEventDetail() {
     const [ordering, setOrdering] = useState(false);
     const [error, setError] = useState(null);
     const [loginPrompt, setLoginPrompt] = useState(false);
+    const [freeOrderDone, setFreeOrderDone] = useState(false);
 
     // Au retour du paiement (ou d'une commande abandonnée), le stock restant a changé
     const firstFocus = useRef(true);
@@ -110,7 +113,7 @@ export default function ScreenEventDetail() {
             setQuantities({});
             setPromoCode('');
             // Une commande à 0 € est payée directement par l'API
-            if (order.status === 'PAID') navigation.navigate('Tickets');
+            if (order.status === 'PAID') setFreeOrderDone(true);
             else navigation.navigate('Checkout', { order, eventName: event.name });
         } catch (err) {
             setError(err);
@@ -181,7 +184,7 @@ export default function ScreenEventDetail() {
                                 <Text style={styles.infoValue} numberOfLines={2}>
                                     {address ?? 'Lieu non précisé'}
                                 </Text>
-                                {distance != null && <Text style={styles.infoSub}>{formatDistance(distance)}</Text>}
+                                {Number.isFinite(distance) && <Text style={styles.infoSub}>{formatDistance(distance)}</Text>}
                             </View>
                         </View>
                     </View>
@@ -258,6 +261,7 @@ export default function ScreenEventDetail() {
                 </View>
             </ScrollView>
 
+            <BottomFade style={styles.buttonFade} />
             <Pressable
                 onPress={reserve}
                 disabled={count === 0 || ordering}
@@ -271,6 +275,16 @@ export default function ScreenEventDetail() {
             </Pressable>
 
             <LoadingPopup visible={ordering} title="Réservation..." message="Nous réservons vos billets." />
+            <SuccessPopup
+                visible={freeOrderDone}
+                title="Réservation confirmée"
+                message="Vos billets gratuits sont prêts, retrouvez-les dans « Mes billets »."
+                buttonLabel="Voir mes billets"
+                onClose={() => {
+                    setFreeOrderDone(false);
+                    navigation.navigate('Tickets');
+                }}
+            />
             <ErrorPopup error={error} onClose={() => setError(null)} />
             <ConfirmPopup
                 visible={loginPrompt}
@@ -377,6 +391,7 @@ const styles = StyleSheet.create({
     qty: { minWidth: 22, textAlign: 'center', fontSize: 20, fontWeight: '800', color: COLORS.navy },
     promo: { marginTop: 20 },
 
+    buttonFade: { bottom: 84, height: 110 },
     reserve: {
         position: 'absolute',
         left: 20,

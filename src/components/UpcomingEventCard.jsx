@@ -39,7 +39,7 @@ export default function UpcomingEventCard({ event, categoryLabel, userLocation, 
                     {categoryLabel} • {formatLongDate(event.start_date)}
                 </Text>
 
-                {(showPlace || distance != null) && (
+                {(showPlace || Number.isFinite(distance)) && (
                     <View style={styles.row}>
                         {showPlace && (
                             <View style={styles.place}>
@@ -49,7 +49,7 @@ export default function UpcomingEventCard({ event, categoryLabel, userLocation, 
                                 </Text>
                             </View>
                         )}
-                        {distance != null && <Text style={styles.distance}>{formatDistance(distance)}</Text>}
+                        {Number.isFinite(distance) && <Text style={styles.distance}>{formatDistance(distance)}</Text>}
                     </View>
                 )}
             </View>

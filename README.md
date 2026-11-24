@@ -52,7 +52,7 @@ npm install
 
 Créer le fichier `.env` à partir de `.env.example`. Toutes les valeurs sont facultatives :
 - `EXPO_PUBLIC_API_HOST` : laissé vide, l'adresse de l'API est détectée automatiquement (`10.0.2.2` sur l'émulateur Android, l'IP du PC sur un téléphone avec Expo Go) ;
-- `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` : sans clé, l'application fonctionne mais n'affiche pas les distances en voiture.
+- `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` : sans clé (ou si Google la refuse), les distances sont calculées à vol d'oiseau. La clé doit avoir l'API **Routes** activée dans Google Cloud.
 
 Puis lancer :
 
@@ -101,6 +101,7 @@ Voir [login.txt](login.txt). Tous les comptes ont le mot de passe `password` :
 - **API externe** : Google Routes pour les distances en voiture.
 - **Validation des formulaires** pendant la saisie et à l'envoi. Mot de passe selon la norme **NIST SP 800-63B** (8 caractères minimum, mots de passe courants refusés).
 - **Requêtes annulées** (`AbortController`) quand on quitte un écran avant la réponse.
+- **Animations** (API `Animated` de React Native, sans dépendance) : transitions entre les écrans (glissement, fondu entre les onglets) et confirmation animée après un paiement ou une réservation gratuite (`SuccessPopup`).
 
 ## Structure
 
