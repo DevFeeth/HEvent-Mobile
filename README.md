@@ -101,6 +101,7 @@ Voir [login.txt](login.txt). Tous les comptes ont le mot de passe `password` :
 - **API externe** : Google Routes pour les distances en voiture.
 - **Validation des formulaires** pendant la saisie et à l'envoi. Mot de passe selon la norme **NIST SP 800-63B** (8 caractères minimum, mots de passe courants refusés).
 - **Requêtes annulées** (`AbortController`) quand on quitte un écran avant la réponse.
+- **Animations** (API `Animated` de React Native, sans dépendance) : transitions entre les écrans (glissement, fondu entre les onglets) et confirmation animée après un paiement ou une réservation gratuite (`SuccessPopup`).
 
 ## Structure
 
