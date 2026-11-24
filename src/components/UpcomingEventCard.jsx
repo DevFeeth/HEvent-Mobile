@@ -25,6 +25,7 @@ export default function UpcomingEventCard({ event, categoryLabel, userLocation, 
         [event.id, coords?.latitude, coords?.longitude, canLocate]
     );
     const place = formatAddress(places?.[0]);
+    const showPlace = canLocate && !!place;
 
     return (
         <Pressable onPress={onPress} style={({ pressed }) => [styles.card, pressed && styles.pressed]}>
@@ -34,19 +35,21 @@ export default function UpcomingEventCard({ event, categoryLabel, userLocation, 
                 <Text style={styles.name} numberOfLines={1}>
                     {event.name}
                 </Text>
-                <View style={styles.row}>
-                    <Text style={styles.meta} numberOfLines={1}>
-                        {categoryLabel} • {formatLongDate(event.start_date)}
-                    </Text>
-                    {Number.isFinite(distance) && <Text style={styles.distance}>{formatDistance(distance)}</Text>}
-                </View>
+                <Text style={styles.meta} numberOfLines={1}>
+                    {categoryLabel} • {formatLongDate(event.start_date)}
+                </Text>
 
-                {canLocate && !!place && (
-                    <View style={styles.place}>
-                        <Ionicons name="location-outline" size={14} color={COLORS.navy} />
-                        <Text style={styles.placeText} numberOfLines={1}>
-                            {place}
-                        </Text>
+                {(showPlace || Number.isFinite(distance)) && (
+                    <View style={styles.row}>
+                        {showPlace && (
+                            <View style={styles.place}>
+                                <Ionicons name="location-outline" size={14} color={COLORS.navy} />
+                                <Text style={styles.placeText} numberOfLines={1} ellipsizeMode="tail">
+                                    {place}
+                                </Text>
+                            </View>
+                        )}
+                        {Number.isFinite(distance) && <Text style={styles.distance}>{formatDistance(distance)}</Text>}
                     </View>
                 )}
             </View>
@@ -70,6 +73,7 @@ const styles = StyleSheet.create({
     },
     info: {
         flex: 1,
+        minWidth: 0,
         gap: 4,
     },
     name: {
@@ -83,22 +87,26 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     meta: {
-        flex: 1,
         fontSize: 13,
         color: COLORS.navyLight,
         opacity: 0.75,
     },
     place: {
+        flex: 1,
+        minWidth: 0,
         flexDirection: 'row',
         alignItems: 'center',
         gap: 4,
     },
     placeText: {
-        flexShrink: 1,
+        flex: 1,
+        minWidth: 0,
         fontSize: 13,
         color: COLORS.text,
     },
     distance: {
+        flexShrink: 0,
+        marginLeft: 'auto',
         fontSize: 13,
         fontWeight: '700',
         color: COLORS.text,

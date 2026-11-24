@@ -35,6 +35,13 @@
           "cameraPermission": "HEvent utilise la caméra pour scanner les QR codes des billets à l’entrée.",
           "recordAudioAndroid": false
         }
+      ],
+      [
+        "expo-calendar",
+        {
+          "calendarPermission": "HEvent ajoute les événements à votre calendrier pour vous les rappeler.",
+          "writeOnlyCalendarPermission": "HEvent ajoute les événements à votre calendrier pour vous les rappeler."
+        }
       ]
     ]
   }

@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 
 import BottomFade from '../components/BottomFade';
 import ConfirmPopup from '../components/ConfirmPopup';
+import EventMenu from '../components/EventMenu';
 import ErrorPopup from '../components/ErrorPopup';
 import Field from '../components/Field';
 import LoadingPopup from '../components/LoadingPopup';
@@ -137,6 +138,8 @@ export default function ScreenEventDetail() {
                     >
                         <Ionicons name="arrow-back" size={24} color={COLORS.navy} />
                     </Pressable>
+
+                    <EventMenu event={event} address={address} top={insets.top + 12} />
 
                     <View style={styles.categoryChip}>
                         <Text style={styles.categoryText}>{categoryLabel(event.category_name)}</Text>
