@@ -1,5 +1,7 @@
-import { Pressable, StyleSheet } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { BottomTabBar, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import BottomFade from '../components/BottomFade';
 
 import TabBarIcon from '../components/TabBarIcon';
 import { COLORS } from '../constants/colors';
@@ -38,6 +40,13 @@ export default function BottomTabs() {
     return (
         <Tab.Navigator
             initialRouteName="Home"
+            // Barre flottante posée sur un fond en dégradé qui masque le contenu qui défile dessous
+            tabBar={(props) => (
+                <View style={styles.dock} pointerEvents="box-none">
+                    <BottomFade style={styles.dockFade} />
+                    <BottomTabBar {...props} />
+                </View>
+            )}
             screenOptions={({ route }) => ({
                 headerShown: false,
                 animation: 'shift',
@@ -57,12 +66,17 @@ export default function BottomTabs() {
 }
 
 const styles = StyleSheet.create({
-    tabBar: {
+    dock: {
         position: 'absolute',
-        left: 16,
-        right: 16,
-        bottom: 20,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        paddingTop: 40,
+    },
+    dockFade: { top: 0 },
+    tabBar: {
         height: 64,
+        marginBottom: 20,
         borderRadius: 32,
         backgroundColor: COLORS.bar,
         elevation: 1,
@@ -70,8 +84,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 10,
         shadowOffset: { width: 0, height: 4 },
-        marginLeft: 10,
-        marginRight: 10,
+        marginLeft: 26,
+        marginRight: 26,
     },
     tabItem: {
         padding: 12,

@@ -52,7 +52,7 @@ npm install
 
 Créer le fichier `.env` à partir de `.env.example`. Toutes les valeurs sont facultatives :
 - `EXPO_PUBLIC_API_HOST` : laissé vide, l'adresse de l'API est détectée automatiquement (`10.0.2.2` sur l'émulateur Android, l'IP du PC sur un téléphone avec Expo Go) ;
-- `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` : sans clé, l'application fonctionne mais n'affiche pas les distances en voiture.
+- `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` : sans clé (ou si Google la refuse), les distances sont calculées à vol d'oiseau. La clé doit avoir l'API **Routes** activée dans Google Cloud.
 
 Puis lancer :
 

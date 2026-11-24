@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
+import BottomFade from '../components/BottomFade';
 import ConfirmPopup from '../components/ConfirmPopup';
 import ErrorPopup from '../components/ErrorPopup';
 import Field from '../components/Field';
@@ -180,7 +181,7 @@ export default function ScreenEventDetail() {
                                 <Text style={styles.infoValue} numberOfLines={2}>
                                     {address ?? 'Lieu non précisé'}
                                 </Text>
-                                {distance != null && <Text style={styles.infoSub}>{formatDistance(distance)}</Text>}
+                                {Number.isFinite(distance) && <Text style={styles.infoSub}>{formatDistance(distance)}</Text>}
                             </View>
                         </View>
                     </View>
@@ -257,6 +258,7 @@ export default function ScreenEventDetail() {
                 </View>
             </ScrollView>
 
+            <BottomFade style={styles.buttonFade} />
             <Pressable
                 onPress={reserve}
                 disabled={count === 0 || ordering}
@@ -386,6 +388,7 @@ const styles = StyleSheet.create({
     qty: { minWidth: 22, textAlign: 'center', fontSize: 20, fontWeight: '800', color: COLORS.navy },
     promo: { marginTop: 20 },
 
+    buttonFade: { bottom: 84, height: 110 },
     reserve: {
         position: 'absolute',
         left: 20,

@@ -38,7 +38,7 @@ export default function UpcomingEventCard({ event, categoryLabel, userLocation, 
                     <Text style={styles.meta} numberOfLines={1}>
                         {categoryLabel} • {formatLongDate(event.start_date)}
                     </Text>
-                    {distance != null && <Text style={styles.distance}>{formatDistance(distance)}</Text>}
+                    {Number.isFinite(distance) && <Text style={styles.distance}>{formatDistance(distance)}</Text>}
                 </View>
 
                 {canLocate && !!place && (

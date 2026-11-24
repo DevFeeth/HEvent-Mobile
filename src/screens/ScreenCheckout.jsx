@@ -6,6 +6,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 import ConfirmPopup from '../components/ConfirmPopup';
 import ErrorPopup from '../components/ErrorPopup';
+import BottomFade from '../components/BottomFade';
 import LoadingPopup from '../components/LoadingPopup';
 import SuccessPopup from '../components/SuccessPopup';
 import { API_MESSAGES } from '../constants/apiMessages';
@@ -205,6 +206,7 @@ export default function ScreenCheckout() {
                 <Text style={styles.note}>Paiement simulé : aucune carte réelle n’est débitée.</Text>
             </ScrollView>
 
+            <BottomFade style={styles.buttonFade} />
             <Pressable
                 onPress={pay}
                 disabled={!!busy || expired || paid}
@@ -307,6 +309,7 @@ const styles = StyleSheet.create({
     methodHint: { fontSize: 12, color: COLORS.navyLight, opacity: 0.75 },
     note: { fontSize: 12, color: COLORS.navyLight, opacity: 0.7, marginTop: 10, textAlign: 'center' },
 
+    buttonFade: { bottom: 84, height: 110 },
     payButton: {
         position: 'absolute',
         left: 20,
