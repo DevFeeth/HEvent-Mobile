@@ -7,6 +7,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import ConfirmPopup from '../components/ConfirmPopup';
 import ErrorPopup from '../components/ErrorPopup';
 import LoadingPopup from '../components/LoadingPopup';
+import SuccessPopup from '../components/SuccessPopup';
 import { API_MESSAGES } from '../constants/apiMessages';
 import { COLORS } from '../constants/colors';
 import { cancelOrder, payOrder } from '../services/orderService';
@@ -50,6 +51,7 @@ export default function ScreenCheckout() {
     const [error, setError] = useState(null);
     const [expired, setExpired] = useState(false);
     const [pendingLeave, setPendingLeave] = useState(null);
+    const [paid, setPaid] = useState(false);
     const allowLeave = useRef(false);
 
     const deadline = new Date(order.created_at).getTime() + ORDER_LIFETIME_MS;
@@ -59,13 +61,13 @@ export default function ScreenCheckout() {
         const timer = setInterval(() => {
             const left = deadline - Date.now();
             setRemaining(left);
-            if (left <= 0) {
+            if (left <= 0 && !paid) {
                 clearInterval(timer);
                 setExpired(true);
             }
         }, 1000);
         return () => clearInterval(timer);
-    }, [deadline]);
+    }, [deadline, paid]);
 
     // Quitter le paiement annule la commande : les billets sont remis en vente tout de suite
     useEffect(
@@ -91,13 +93,17 @@ export default function ScreenCheckout() {
         setBusy('pay');
         try {
             await payOrder(order.id, method);
-            leave();
-            navigation.navigate('Tickets');
+            setPaid(true);
         } catch (err) {
             setError(err);
         } finally {
             setBusy(null);
         }
+    };
+
+    const showTickets = () => {
+        leave();
+        navigation.navigate('Tickets');
     };
 
     const confirmLeave = async () => {
@@ -201,7 +207,7 @@ export default function ScreenCheckout() {
 
             <Pressable
                 onPress={pay}
-                disabled={!!busy || expired}
+                disabled={!!busy || expired || paid}
                 style={({ pressed }) => [styles.payButton, (pressed || busy || expired) && styles.dim]}
             >
                 <Ionicons name="lock-closed-outline" size={20} color={COLORS.white} />
@@ -214,6 +220,13 @@ export default function ScreenCheckout() {
                 message={busy === 'pay' ? 'Merci de patienter.' : 'Vos billets sont remis en vente.'}
             />
             <ErrorPopup error={error} onClose={() => setError(null)} />
+            <SuccessPopup
+                visible={paid}
+                title="Paiement accepté"
+                message="Vos billets sont prêts, retrouvez-les dans « Mes billets »."
+                buttonLabel="Voir mes billets"
+                onClose={showTickets}
+            />
             <ErrorPopup error={expired && !busy ? EXPIRED : null} onClose={closeExpired} />
             <ConfirmPopup
                 visible={!!pendingLeave}

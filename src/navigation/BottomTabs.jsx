@@ -40,6 +40,7 @@ export default function BottomTabs() {
             initialRouteName="Home"
             screenOptions={({ route }) => ({
                 headerShown: false,
+                animation: 'shift',
                 tabBarShowLabel: false,
                 tabBarStyle: styles.tabBar,
                 tabBarItemStyle: styles.tabItem,

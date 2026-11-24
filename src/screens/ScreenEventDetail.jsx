@@ -10,6 +10,7 @@ import ConfirmPopup from '../components/ConfirmPopup';
 import ErrorPopup from '../components/ErrorPopup';
 import Field from '../components/Field';
 import LoadingPopup from '../components/LoadingPopup';
+import SuccessPopup from '../components/SuccessPopup';
 import EventImage from '../components/EventImage';
 import { COLORS } from '../constants/colors';
 import useCategories from '../hooks/useCategories';
@@ -52,6 +53,7 @@ export default function ScreenEventDetail() {
     const [ordering, setOrdering] = useState(false);
     const [error, setError] = useState(null);
     const [loginPrompt, setLoginPrompt] = useState(false);
+    const [freeOrderDone, setFreeOrderDone] = useState(false);
 
     // Au retour du paiement (ou d'une commande abandonnée), le stock restant a changé
     const firstFocus = useRef(true);
@@ -109,7 +111,7 @@ export default function ScreenEventDetail() {
             setQuantities({});
             setPromoCode('');
             // Une commande à 0 € est payée directement par l'API
-            if (order.status === 'PAID') navigation.navigate('Tickets');
+            if (order.status === 'PAID') setFreeOrderDone(true);
             else navigation.navigate('Checkout', { order, eventName: event.name });
         } catch (err) {
             setError(err);
@@ -268,6 +270,16 @@ export default function ScreenEventDetail() {
             </Pressable>
 
             <LoadingPopup visible={ordering} title="Réservation..." message="Nous réservons vos billets." />
+            <SuccessPopup
+                visible={freeOrderDone}
+                title="Réservation confirmée"
+                message="Vos billets gratuits sont prêts, retrouvez-les dans « Mes billets »."
+                buttonLabel="Voir mes billets"
+                onClose={() => {
+                    setFreeOrderDone(false);
+                    navigation.navigate('Tickets');
+                }}
+            />
             <ErrorPopup error={error} onClose={() => setError(null)} />
             <ConfirmPopup
                 visible={loginPrompt}
