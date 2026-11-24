@@ -1,6 +1,12 @@
 // Traduction des refus renvoyés par l'API (texte exact de l'API → titre et message affichés).
 // Utilisé automatiquement par getErrorContent (utils/ApiError.js).
 export const API_MESSAGES = {
+    // Connexion
+    'Too many failed login attempts, try again later': {
+        title: 'Trop de tentatives',
+        message: 'Trop de tentatives de connexion échouées. Réessayez dans 15 minutes.',
+    },
+
     // Billets : QR code et entrée
     'This ticket has already been used': {
         title: 'Billet déjà utilisé',
